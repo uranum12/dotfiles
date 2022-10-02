@@ -17,12 +17,6 @@ nnoremap <silent> <Esc><Esc> <cmd>noh<CR>
 nnoremap <silent> <Leader>a <cmd>vs<CR>
 nnoremap <silent> <Leader>s <cmd>sp<CR>
 
-let s:jetpackfile = stdpath('data') .. '/site/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim'
-let s:jetpackurl = "https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim"
-if !filereadable(s:jetpackfile)
-  call system(printf('curl -fsSLo %s --create-dirs %s', s:jetpackfile, s:jetpackurl))
-endif
-
 packadd vim-jetpack
 call jetpack#begin()
 
@@ -119,13 +113,6 @@ call jetpack#add('lewis6991/gitsigns.nvim')
 
 call jetpack#end()
 
-for name in jetpack#names()
-  if !jetpack#tap(name)
-    call jetpack#sync()
-    break
-  endif
-endfor
-
 let g:numbers_exclude = ['alpha', 'toggleterm']
 
 lua<<==========
@@ -167,6 +154,7 @@ require("chowcho").setup({
 
 require('config.nvim-treesitter')
 require('config.nvim-lspconfig')
+require('config.lspsaga')
 require('config.nvim-cmp')
 require('config.telescope')
 require('config.alpha')
@@ -182,11 +170,5 @@ require('gitsigns').setup()
 
 vim.api.nvim_set_keymap("n", "<Leader><Leader>", "<cmd>Chowcho<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>u", "<cmd>UndotreeToggle<CR><cmd>UndotreeFocus<CR>", { noremap = true, silent = true })
-
-require('lspsaga').init_lsp_saga()
-vim.keymap.set("n", "<Space>a", "<cmd>Lspsaga code_action<CR>", { silent = true })
-vim.keymap.set("n", "<Space>k", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
-vim.keymap.set("n", "<Space>g", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
-vim.keymap.set("n", "<Space>r", "<cmd>Lspsaga rename<CR>", { silent = true })
 ==========
 

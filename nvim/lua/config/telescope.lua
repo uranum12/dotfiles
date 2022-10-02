@@ -12,6 +12,15 @@ telescope.setup({
       i = {
         ["<esc>"] = telescope_actions.close,
       }
+    },
+    file_ignore_patterns = {
+      ".git/.*",
+      "node_modules/.*",
+    }
+  },
+  extensions = {
+    frecency = {
+      show_unindexed = false,
     }
   }
 })
