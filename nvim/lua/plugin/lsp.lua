@@ -48,11 +48,11 @@ require("lspsaga").init_lsp_saga({
     },
     finder_action_keys = {
         open = "<CR>",
-        quit = { "q", "<ESC>" },
+        quit = "q",
     },
     code_action_keys = {
         exec = "<CR>",
-        quit = { "q", "<ESC>" },
+        quit = "q",
     },
     rename_action_quit = "<esc>",
     symbol_in_winbar = {
