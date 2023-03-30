@@ -211,6 +211,10 @@ local plugins = {
         end,
         dependencies = {
             {
+                "j-hui/fidget.nvim",
+                config = true,
+            },
+            {
                 "williamboman/mason.nvim",
                 build = ":MasonUpdate",
                 config = true,
