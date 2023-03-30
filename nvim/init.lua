@@ -31,55 +31,60 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
     {
-        "olimorris/onedarkpro.nvim",
-        lazy = false,
-        priority = 1000,
+        "echasnovski/mini.nvim",
+        version = "*",
+        event = "VimEnter",
         config = function()
-            require("onedarkpro").setup({
-                options = {
-                    transparency = true,
-                    cursorline = true,
+            require("mini.base16").setup({
+                palette = {
+                    base00 = "#282c34",
+                    base01 = "#353b45",
+                    base02 = "#3e4451",
+                    base03 = "#545862",
+                    base04 = "#565c64",
+                    base05 = "#abb2bf",
+                    base06 = "#b6bdca",
+                    base07 = "#c8ccd4",
+                    base08 = "#e06c75",
+                    base09 = "#d19a66",
+                    base0A = "#e5c07b",
+                    base0B = "#98c379",
+                    base0C = "#56b6c2",
+                    base0D = "#61afef",
+                    base0E = "#c678dd",
+                    base0F = "#be5046",
                 },
+                use_cterm = true,
             })
-            vim.cmd("colorscheme onedark")
-        end,
-    },
-    {
-        "folke/noice.nvim",
-        config = true,
-        event = "VimEnter",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            {
-                "rcarriga/nvim-notify",
-                opts = {
-                    background_colour = "#000000",
+
+            require("mini.statusline").setup({
+                content = {
+                    active = function()
+                        local mode, mode_hl = require("mini.statusline").section_mode({ trunc_width = 120 })
+                        local git = require("mini.statusline").section_git({ trunc_width = 75 })
+                        local diagnostics = require("mini.statusline").section_diagnostics({ trunc_width = 75 })
+                        local filename = require("mini.statusline").section_filename({ trunc_width = 140 })
+                        local fileinfo = require("mini.statusline").section_fileinfo({ trunc_width = 120 })
+                        local location = require("mini.statusline").section_location({ trunc_width = 75 })
+
+                        return require("mini.statusline").combine_groups({
+                            { hl = mode_hl,                  strings = { mode } },
+                            "%<",
+                            { hl = "MiniStatuslineDevinfo",  strings = { git, diagnostics } },
+                            { hl = "MiniStatuslineFilename", strings = { filename } },
+                            "%=",
+                            { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+                            { hl = mode_hl,                  strings = { location } },
+                        })
+                    end,
                 },
-            },
-        },
-    },
-    {
-        "romgrk/barbar.nvim",
-        event = "VimEnter",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-    },
-    {
-        "petertriho/nvim-scrollbar",
-        event = "VimEnter",
-	opts = {
-		excluded_buftypes = {
-			"starter",
-			"toggleterm",
-		}
-	},
-        config = true,
-    },
-    {
-        "echasnovski/mini.starter",
-        event = "VimEnter",
-        config = function()
+                set_vim_settings = false,
+            })
+
+            require("mini.tabline").setup({
+                tabpage_section = "right",
+            })
+
             local header_art = table.concat({
                 [[                +                            ___]],
                 [[                                 *        ,o88888]],
@@ -114,24 +119,24 @@ local plugins = {
             local section_builtin = function()
                 return {
                     { name = "Edit new buffer", action = "enew", section = "Builtin" },
-                    { name = "Quit NeoVim", action = "qall", section = "Builtin" },
+                    { name = "Quit NeoVim",     action = "qall", section = "Builtin" },
                 }
             end
 
             local section_update = function()
                 return {
-                    { name = "Plugin", action = "Lazy update", section = "Update" },
-                    { name = "Language Server", action = "Mason", section = "Update" },
-                    { name = "TreeSitter", action = "TSUpdate", section = "Update" },
+                    { name = "Plugin",          action = "Lazy update", section = "Update" },
+                    { name = "Language Server", action = "Mason",       section = "Update" },
+                    { name = "TreeSitter",      action = "TSUpdate",    section = "Update" },
                 }
             end
 
             local section_telescope = function()
                 return {
-                    { name = "Files", action = "Telescope find_files", section = "Telescope" },
-                    { name = "Recent", action = "Telescope frecency", section = "Telescope" },
+                    { name = "Files",   action = "Telescope find_files",   section = "Telescope" },
+                    { name = "Recent",  action = "Telescope frecency",     section = "Telescope" },
                     { name = "Browser", action = "Telescope file_browser", section = "Telescope" },
-                    { name = "Grep", action = "Telescope live_grep", section = "Telescope" },
+                    { name = "Grep",    action = "Telescope live_grep",    section = "Telescope" },
                 }
             end
 
@@ -170,65 +175,26 @@ local plugins = {
                     require("mini.starter").gen_hook.aligning("center", "center"),
                 },
             })
-        end,
-    },
-    {
-        "nvim-lualine/lualine.nvim",
-        event = "VimEnter",
-        config = function()
-            require("lualine").setup({
-                options = {
-                    icons_enabled = true,
-                    theme = "onedark",
-                    globalstatus = true,
-                },
-                sections = {
-                    lualine_a = { "mode" },
-                    lualine_b = { "branch", "diff", "diagnostics" },
-                    lualine_c = {
-                        {
-                            function()
-                                return require("nvim-navic").get_location()
-                            end,
-                            cond = function()
-                                return package.loaded["nvim-navic"] and require("nvim-navic").is_available()
-                            end,
-                        },
-                    },
-                    lualine_x = { "filename" },
-                    lualine_y = { "encoding", "filetype" },
-                    lualine_z = { "location" },
-                },
-            })
+
+            require("mini.cursorword").setup()
+            require("mini.indentscope").setup()
+            require("mini.pairs").setup()
         end,
         dependencies = {
-            "olimorris/onedarkpro.nvim",
             "nvim-tree/nvim-web-devicons",
         },
     },
     {
         "neovim/nvim-lspconfig",
-        event = { "VeryLazy" },
+        event = "VeryLazy",
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local on_attach = function(client, bufnr)
-                if client.server_capabilities.documentSymbolProvider then
-                    require("nvim-navic").attach(client, bufnr)
-                end
-            end
-
             require("mason-lspconfig").setup_handlers({
                 function(server_name)
-                    require("lspconfig")[server_name].setup({
-                        capabilities = capabilities,
-                        on_attach = on_attach,
-                    })
+                    require("lspconfig")[server_name].setup({})
                 end,
             })
 
             require("lspconfig").clangd.setup({
-                capabilities = capabilities,
-                on_attach = on_attach,
                 cmd = {
                     "clangd",
                     "-query-driver",
@@ -239,74 +205,31 @@ local plugins = {
             vim.keymap.set("n", "<space>f", function()
                 vim.lsp.buf.format({ async = true })
             end)
-            vim.keymap.set("n", "<space>a", "<cmd>Lspsaga code_action<cr>")
-            vim.keymap.set("n", "<space>d", "<cmd>Lspsaga hover_doc<cr>")
-            vim.keymap.set("n", "<space>r", "<cmd>Lspsaga rename<cr>")
-            vim.keymap.set("n", "<space>g", "<cmd>Lspsaga peek_definition<cr>")
-            vim.keymap.set("n", "<leader>l", "<cmd>Lspsaga lsp_finder<cr>")
-            vim.keymap.set("n", "<leader>o", "<cmd>SymbolsOutline<cr>")
-            vim.keymap.set("n", "<leader>x", "<cmd>TroubleToggle<cr>")
+            vim.keymap.set("n", "<space>r", vim.lsp.buf.rename)
+            vim.keymap.set("n", "<space>d", vim.lsp.buf.hover)
+            vim.keymap.set("n", "<space>a", vim.lsp.buf.code_action)
         end,
         dependencies = {
             {
                 "williamboman/mason.nvim",
-                cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUninstallAll" },
-                opts = {
-                    ui = {
-                        icons = {
-                            package_installed = "✓",
-                            package_pending = "➜",
-                            package_uninstalled = "✗",
-                        },
-                    },
-                },
+                build = ":MasonUpdate",
+                config = true,
             },
             {
                 "williamboman/mason-lspconfig.nvim",
                 config = true,
             },
             {
-                "j-hui/fidget.nvim",
-                config = true,
-            },
-            {
-                "SmiteshP/nvim-navic",
-                config = true,
-            },
-            {
-                "folke/trouble.nvim",
-                config = true,
-            },
-            {
-                "simrat39/symbols-outline.nvim",
-                config = true,
-            },
-            {
-                "glepnir/lspsaga.nvim",
-                opts = {
-                    code_action_lightbulb = {
-                        virtual_text = false,
-                    },
-                    finder_action_keys = {
-                        open = "<CR>",
-                        quit = "q",
-                    },
-                    code_action_keys = {
-                        exec = "<CR>",
-                        quit = "q",
-                    },
-                    rename_action_quit = "<esc>",
-                    symbol_in_winbar = {
-                        enable = false,
-                    },
-                },
-            },
-            {
                 "jose-elias-alvarez/null-ls.nvim",
                 config = function()
-                    require("null-ls").setup({
+                    local null_ls = require("null-ls")
+                    null_ls.setup({
                         sources = {
-                            require("null-ls").builtins.formatting.stylua,
+                            null_ls.builtins.formatting.stylua,
+                            null_ls.builtins.formatting.isort,
+                            null_ls.builtins.formatting.black,
+                            null_ls.builtins.formatting.cmake_format,
+                            null_ls.builtins.formatting.prettier,
                         },
                     })
                 end,
@@ -322,12 +245,6 @@ local plugins = {
                     expand = function(args)
                         require("luasnip").lsp_expand(args.body)
                     end,
-                },
-                formatting = {
-                    format = require("lspkind").cmp_format({
-                        mode = "text_symbol",
-                        maxwidth = 50,
-                    }),
                 },
                 mapping = require("cmp").mapping.preset.insert({
                     ["<C-e>"] = require("cmp").mapping.abort(),
@@ -356,13 +273,11 @@ local plugins = {
                 }),
             })
 
-            require("cmp").setup.cmdline("/", {
+            require("cmp").setup.cmdline({ "/", "?" }, {
                 mapping = require("cmp").mapping.preset.cmdline(),
-                sources = require("cmp").config.sources({
-                    { name = "nvim_lsp_document_symbol" },
-                }, {
+                sources = {
                     { name = "buffer" },
-                }),
+                },
             })
 
             require("cmp").setup.cmdline(":", {
@@ -387,9 +302,7 @@ local plugins = {
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
             "hrsh7th/cmp-nvim-lsp-signature-help",
-            "hrsh7th/cmp-nvim-lsp-document-symbol",
             "saadparwaiz1/cmp_luasnip",
-            "onsails/lspkind.nvim",
             "L3MON4D3/LuaSnip",
             "rafamadriz/friendly-snippets",
         },
@@ -397,17 +310,13 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        event = { "VeryLazy" },
+        event = "VeryLazy",
         config = function()
             require("nvim-treesitter.configs").setup({
                 auto_install = true,
                 ensure_installed = { "c", "lua", "vim", "help", "query" },
                 highlight = {
                     enable = true,
-                },
-                rainbow = {
-                    enable = true,
-                    max_file_lines = nil,
                 },
                 context_commentstring = {
                     enable = true,
@@ -434,20 +343,30 @@ local plugins = {
                 },
             },
             {
-                "haringsrob/nvim_context_vt",
+                "nvim-treesitter/nvim-treesitter-context",
                 opts = {
-                    enabled = true,
+                    enable = true,
+                    mode = "topline",
                 },
             },
-            "p00f/nvim-ts-rainbow",
             "JoosepAlviste/nvim-ts-context-commentstring",
             "windwp/nvim-ts-autotag",
-            "echasnovski/mini.comment",
         },
     },
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+        branch = "0.1.x",
+        cmd = "Telescope",
+        keys = {
+            { "<leader>ff", "<cmd>Telescope find_files<cr>" },
+            { "<leader>fe", "<cmd>Telescope file_browser<cr>" },
+            { "<leader>fr", "<cmd>Telescope frecency<cr>" },
+            { "<leader>fw", "<cmd>Telescope frecency workspace=CWD<cr>" },
+            { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
+            { "<leader>fb", "<cmd>Telescope buffers<cr>" },
+            { "<leader>fk", "<cmd>Telescope keymaps<cr>" },
+            { "<leader>fp", "<cmd>Telescope neoclip<cr>" },
+        },
         config = function()
             require("telescope").setup({
                 pickers = {
@@ -494,17 +413,6 @@ local plugins = {
             require("telescope").load_extension("frecency")
             require("telescope").load_extension("neoclip")
         end,
-        cmd = "Telescope",
-        keys = {
-            { "<leader>ff", "<cmd>Telescope find_files<cr>" },
-            { "<leader>fe", "<cmd>Telescope file_browser<cr>" },
-            { "<leader>fr", "<cmd>Telescope frecency<cr>" },
-            { "<leader>fw", "<cmd>Telescope frecency workspace=CWD<cr>" },
-            { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
-            { "<leader>fb", "<cmd>Telescope buffers<cr>" },
-            { "<leader>fk", "<cmd>Telescope keymaps<cr>" },
-            { "<leader>fp", "<cmd>Telescope neoclip<cr>" },
-        },
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "nvim-lua/plenary.nvim",
@@ -553,27 +461,6 @@ local plugins = {
         end,
     },
     {
-        "gpanders/editorconfig.nvim",
-        event = { "VeryLazy" },
-    },
-    {
-        "lewis6991/gitsigns.nvim",
-        event = { "VeryLazy" },
-        config = true,
-    },
-    {
-        "mbbill/undotree",
-        cmd = {
-            "UndotreeToggle",
-            "UndotreeHide",
-            "UndotreeShow",
-            "UndotreeFocus",
-        },
-        keys = {
-            { "<leader>u", "<cmd>UndotreeToggle<cr><cmd>UndotreeFocus<cr>" },
-        },
-    },
-    {
         "tkmpypy/chowcho.nvim",
         cmd = "Chowcho",
         keys = {
@@ -588,53 +475,40 @@ local plugins = {
         },
     },
     {
-        "echasnovski/mini.cursorword",
-        event = { "VeryLazy" },
-        config = function()
-            require("mini.cursorword").setup()
-        end,
-    },
-    {
-        "echasnovski/mini.indentscope",
-        event = { "VeryLazy" },
-        config = function()
-            require("mini.indentscope").setup()
-        end,
-    },
-    {
-        "echasnovski/mini.pairs",
-        event = { "VeryLazy" },
-        config = function()
-            require("mini.pairs").setup()
-        end,
+        "mbbill/undotree",
+        cmd = {
+            "UndotreeToggle",
+            "UndotreeHide",
+            "UndotreeShow",
+            "UndotreeFocus",
+        },
+        keys = {
+            { "<leader>u", "<cmd>UndotreeToggle<cr><cmd>UndotreeFocus<cr>" },
+        },
     },
     {
         "myusuf3/numbers.vim",
         event = "InsertEnter",
-        config = function()
+        init = function()
             vim.g.numbers_exclude = {
                 "starter",
-		"toggleterm",
+                "toggleterm",
             }
         end,
+    },
+    {
+        "editorconfig/editorconfig-vim",
+        event = "VeryLazy",
+    },
+    {
+        "lewis6991/gitsigns.nvim",
+        event = { "VeryLazy" },
+        config = true,
     },
     {
         "kevinhwang91/nvim-hlslens",
         event = { "VeryLazy" },
         config = true,
-    },
-    {
-        "norcalli/nvim-colorizer.lua",
-        event = { "VeryLazy" },
-        config = true,
-    },
-    {
-        "mechatroner/rainbow_csv",
-        ft = "csv",
-    },
-    {
-        "dstein64/vim-startuptime",
-        cmd = "StartupTime",
     },
 }
 
