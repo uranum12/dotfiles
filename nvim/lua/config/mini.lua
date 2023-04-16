@@ -54,13 +54,13 @@ return {
                     local location = mini_statusline.section_location({ trunc_width = 75 })
 
                     return mini_statusline.combine_groups({
-                        { hl = mode_hl,                  strings = { mode } },
+                        { hl = mode_hl, strings = { mode } },
                         "%<",
-                        { hl = "MiniStatuslineDevinfo",  strings = { git, diagnostics } },
+                        { hl = "MiniStatuslineDevinfo", strings = { git, diagnostics } },
                         { hl = "MiniStatuslineFilename", strings = { filename } },
                         "%=",
                         { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-                        { hl = mode_hl,                  strings = { location } },
+                        { hl = mode_hl, strings = { location } },
                     })
                 end,
             },
@@ -101,24 +101,24 @@ return {
         local section_builtin = function()
             return {
                 { name = "Edit new buffer", action = "enew", section = "Builtin" },
-                { name = "Quit NeoVim",     action = "qall", section = "Builtin" },
+                { name = "Quit NeoVim", action = "qall", section = "Builtin" },
             }
         end
 
         local section_update = function()
             return {
-                { name = "Plugin",          action = "Lazy update", section = "Update" },
-                { name = "Language Server", action = "Mason",       section = "Update" },
-                { name = "TreeSitter",      action = "TSUpdate",    section = "Update" },
+                { name = "Plugin", action = "Lazy update", section = "Update" },
+                { name = "Language Server", action = "Mason", section = "Update" },
+                { name = "TreeSitter", action = "TSUpdate", section = "Update" },
             }
         end
 
         local section_telescope = function()
             return {
-                { name = "Files",   action = "Telescope find_files",   section = "Telescope" },
-                { name = "Recent",  action = "Telescope frecency",     section = "Telescope" },
+                { name = "Files", action = "Telescope find_files", section = "Telescope" },
+                { name = "Recent", action = "Telescope frecency", section = "Telescope" },
                 { name = "Browser", action = "Telescope file_browser", section = "Telescope" },
-                { name = "Grep",    action = "Telescope live_grep",    section = "Telescope" },
+                { name = "Grep", action = "Telescope live_grep", section = "Telescope" },
             }
         end
 
