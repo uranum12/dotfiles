@@ -10,18 +10,15 @@ return {
                 highlight = {
                     enable = true,
                 },
-                context_commentstring = {
-                    enable = true,
-                },
                 autotag = {
                     enable = true,
                 },
             })
 
             require("mini.comment").setup({
-                hooks = {
-                    pre = function()
-                        require("ts_context_commentstring.internal").update_commentstring()
+                options = {
+                    custom_commentstring = function()
+                        return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
                     end,
                 },
             })
@@ -35,13 +32,14 @@ return {
                 },
             },
             {
-                "nvim-treesitter/nvim-treesitter-context",
+                "JoosepAlviste/nvim-ts-context-commentstring",
                 opts = {
-                    enable = true,
-                    mode = "topline",
+                    enable_autocmd = false,
+                    languages = {
+                        cpp = "// %s",
+                    }
                 },
             },
-            "JoosepAlviste/nvim-ts-context-commentstring",
             "windwp/nvim-ts-autotag",
         },
     },
