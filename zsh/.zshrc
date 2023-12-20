@@ -72,8 +72,18 @@ function zsh_prompt() {
         fi
     fi
 
-    echo -e "%F{4}%~%f $git_status\n$VIRTUAL_ENV_PROMPT%(?.%F{2}.%F{1})❯%f "
-    unset git_status
+    if [ -n "$SSH_CONNECTION" ]; then
+        ssh_host="%F{3}%n%f@%F{3}%m%f:"
+    fi
+
+    if [ -n "$VIRTUAL_ENV_PROMPT" ]; then
+        venv_prompt="$VIRTUAL_ENV_PROMPT"
+    elif [ -n "$VIRTUAL_ENV" ]; then
+        venv_prompt="(${VIRTUAL_ENV##*/}) "
+    fi
+
+    echo -e "$ssh_host%F{4}%~%f $git_status\n$venv_prompt%(?.%F{2}.%F{1})❯%f "
+    unset git_status ssh_host venv_prompt
 }
 function precmd() {
     PROMPT=$(zsh_prompt)
