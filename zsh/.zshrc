@@ -57,6 +57,10 @@ zsh-defer source "$ZDOTDIR/hooks/lazy.zsh"
 
 # prompt
 function zsh_prompt() {
+    local git_status=""
+    local ssh_host=""
+    local venv_prompt=""
+
     git_status=$(git branch --show-current 2>/dev/null)
     if [ $? -eq 0 ]; then
         if [ -z "$git_status" ]; then
@@ -64,7 +68,7 @@ function zsh_prompt() {
             if [ -z "$git_status" ]; then
                 git_status="@%F{2}$(git rev-parse --short HEAD)%f"
             else
-                git_status="#%F{2}${git_status//$'\n'/%f \#%F\{2\}}"
+                git_status="#%F{2}${git_status//$'\n'/%f #%F{2\}}" # }"
                 git_status="${git_status% #}%f"
             fi
         else
@@ -83,7 +87,6 @@ function zsh_prompt() {
     fi
 
     echo -e "$ssh_host%F{4}%~%f $git_status\n$venv_prompt%(?.%F{2}.%F{1})❯%f "
-    unset git_status ssh_host venv_prompt
 }
 function precmd() {
     PROMPT=$(zsh_prompt)
