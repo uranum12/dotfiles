@@ -30,7 +30,7 @@ HISTSIZE=100000
 SAVEHIST=1000000
 HISTORY_IGNORE="(cd|clear|exit|env|pwd|l[sal])"
 
-setopt share_history         # 履歴を共有
+setopt inc_append_history    # 履歴をインクリメンタルに追加
 setopt hist_ignore_all_dups  # すでに同じものがある場合削除
 setopt hist_ignore_space     # スペースから始まる履歴を追加しない
 setopt hist_reduce_blanks    # 余計なスペースを削除
