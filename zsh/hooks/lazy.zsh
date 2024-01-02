@@ -1,4 +1,7 @@
 # aliases
+alias cp="cp -i"
+alias mv="mv -i"
+
 if command -v exa >/dev/null 2>&1; then
     alias ls="exa --icons"
     alias la="exa -a --icons"
