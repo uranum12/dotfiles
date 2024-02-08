@@ -2,11 +2,11 @@
 alias cp="cp -i"
 alias mv="mv -i"
 
-if command -v exa >/dev/null 2>&1; then
-    alias ls="exa --icons"
-    alias la="exa -a --icons"
-    alias ll="exa -ahl --icons"
-    alias tree="exa -Thl --icons"
+if command -v eza >/dev/null 2>&1; then
+    alias ls="eza --icons"
+    alias la="eza -a --icons"
+    alias ll="eza -ahl --icons --time-style relative --group-directories-first"
+    alias tree="eza -Thl --icons --time-style relative --group-directories-first"
 else
     alias la="ls -a"
     alias ll="ls -al"
@@ -51,7 +51,7 @@ fi
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
     function zoxide_cd() {
-        local src=$(zoxide query -l | fzf-tmux -p 80% --height 30% --no-sort --preview="exa -ahl --icons {}")
+        local src=$(zoxide query -l | fzf-tmux -p 80% --height 30% --no-sort --preview="eza -ahl --icons --color always --time-style relative --group-directories-first {}")
         if [ -n "$src" ]; then
             BUFFER="cd $src"
             CURSOR=$#BUFFER
@@ -65,7 +65,7 @@ fi
 # ghq
 if command -v ghq >/dev/null 2>&1; then
     function ghq_repo() {
-        local src=$(ghq list | fzf-tmux -p 80% --height 30% --preview="exa -ahl --icons $(ghq root)/{}")
+        local src=$(ghq list | fzf-tmux -p 80% --height 30% --preview="eza -ahl --icons --color always --time-style relative --group-directories-first $(ghq root)/{}")
         if [ -n "$src" ]; then
             BUFFER="cd $(ghq root)/$src"
             CURSOR=$#BUFFER
