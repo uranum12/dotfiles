@@ -37,9 +37,9 @@ function history_select() {
 zle -N history_select
 bindkey '^r' history_select
 
-# asdf
-if [ -e "$HOME/.asdf/asdf.sh" ]; then
-    source "$HOME/.asdf/asdf.sh"
+# mise
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
 fi
 
 # rye
