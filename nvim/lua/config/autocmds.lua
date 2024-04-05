@@ -6,7 +6,7 @@ return {
             callback = function()
                 local ftype, _ = vim.filetype.match({ buf = 0 })
                 if ftype then
-                    vim.opt_local.relativenumber = false
+                    vim.api.nvim_set_option_value("relativenumber", false, { scope = "local" })
                 end
             end,
         })
@@ -15,9 +15,11 @@ return {
             callback = function()
                 local ftype, _ = vim.filetype.match({ buf = 0 })
                 if ftype then
-                    vim.opt_local.relativenumber = true
+                    vim.api.nvim_set_option_value("relativenumber", true, { scope = "local" })
                 end
             end,
         })
+
+        vim.api.nvim_create_autocmd("WinEnter", { command = "checktime" })
     end,
 }

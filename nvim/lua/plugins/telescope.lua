@@ -1,30 +1,47 @@
 return {
-    {
-        "nvim-telescope/telescope.nvim",
-        branch = "0.1.x",
-        cmd = "Telescope",
-        config = function()
-            require("config.telescope").setup()
-        end,
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-            "nvim-lua/plenary.nvim",
-            "kkharji/sqlite.lua",
-            {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                build = {
-                    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release"
-                        .. " && cmake --build build --config Release"
-                        .. " && cmake --install build --prefix build",
+    later = function(add)
+        add({
+            source = "nvim-telescope/telescope.nvim",
+            depends = {
+                "nvim-lua/plenary.nvim",
+                "kkharji/sqlite.lua",
+                "nvim-telescope/telescope-frecency.nvim",
+            },
+        })
+
+        local telescope = require("telescope")
+        local telescope_actions = require("telescope.actions")
+        telescope.setup({
+            pickers = {
+                find_files = {
+                    hidden = true,
+                },
+                grep_string = {
+                    additional_args = { "--hidden" },
+                },
+                live_grep = {
+                    additional_args = { "--hidden" },
                 },
             },
-            "nvim-telescope/telescope-file-browser.nvim",
-            "nvim-telescope/telescope-frecency.nvim",
-            {
-                "AckslD/nvim-neoclip.lua",
-                event = "VeryLazy",
-                config = true,
+            defaults = {
+                generic_sorter = require("mini.fuzzy").get_telescope_sorter,
+                mappings = {
+                    i = {
+                        ["<esc>"] = telescope_actions.close,
+                    },
+                },
+                file_ignore_patterns = {
+                    ".git/.*",
+                    "node_modules/.*",
+                },
             },
-        },
-    },
+            extensions = {
+                frecency = {
+                    show_unindexed = false,
+                },
+            },
+        })
+
+        telescope.load_extension("frecency")
+    end,
 }

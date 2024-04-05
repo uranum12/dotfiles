@@ -1,59 +1,20 @@
 return {
-    {
-        "akinsho/toggleterm.nvim",
-        version = "*",
-        cmd = {
-            "ToggleTerm",
-            "LazyGit",
-        },
-        config = function()
-            require("toggleterm").setup({
-                direction = "float",
-            })
+    now = function(add)
+        add("nvim-tree/nvim-web-devicons")
+        require("nvim-web-devicons").setup()
+    end,
+    later = function(add)
+        add("akinsho/toggleterm.nvim")
+        require("toggleterm").setup({
+            direction = "float",
+            persist_mode = false,
+        })
 
-            local lazygit = require("toggleterm.terminal").Terminal:new({
-                cmd = "lazygit",
-                direction = "float",
-            })
+        add("mbbill/undotree")
+        vim.g.undotree_DiffAutoOpen = 0
+        vim.g.undotree_SetFocusWhenToggle = 1
 
-            vim.api.nvim_create_user_command("LazyGit", function()
-                lazygit:toggle()
-            end, { nargs = 0 })
-        end,
-    },
-    {
-        "tkmpypy/chowcho.nvim",
-        cmd = "Chowcho",
-        opts = {
-            icon_enabled = true,
-            border_style = "rounded",
-        },
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-    },
-    {
-        "mbbill/undotree",
-        cmd = {
-            "UndotreeToggle",
-            "UndotreeHide",
-            "UndotreeShow",
-            "UndotreeFocus",
-        },
-    },
-    {
-        "lewis6991/gitsigns.nvim",
-        event = "VeryLazy",
-        config = true,
-    },
-    {
-        "kevinhwang91/nvim-hlslens",
-        event = "VeryLazy",
-        config = true,
-    },
-    {
-        "norcalli/nvim-colorizer.lua",
-        event = "VeryLazy",
-        config = true,
-    },
+        add("lewis6991/gitsigns.nvim")
+        require("gitsigns").setup()
+    end,
 }
