@@ -107,7 +107,7 @@ return {
         local section_update = function()
             return {
                 { name = "Plugin", action = "DepsUpdate", section = "Update" },
-                { name = "Language Server", action = "MasonUpdate", section = "Update" },
+                { name = "Language Server", action = "Mason", section = "Update" },
                 { name = "TreeSitter", action = "TSUpdate", section = "Update" },
             }
         end
