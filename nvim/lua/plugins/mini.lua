@@ -160,7 +160,7 @@ return {
 
         require("mini.files").setup({
             mappings = {
-                close = "<esc>",
+                close = "q",
                 go_in = "<right>",
                 go_out = "<left>",
                 show_help = "h",
