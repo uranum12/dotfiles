@@ -1,0 +1,23 @@
+gui:
+  theme:
+    activeBorderColor:
+      - blue
+      - bold
+    inactiveBorderColor:
+      - white
+    optionsTextColor:
+      - blue
+      - bold
+    selectedLineBgColor:
+      - default
+    selectedRangeBgColor:
+      - blue
+  showFileTree: true
+  showRandomTip: false
+  showCommandLog: false
+git:
+  paging:
+    colorarg: always
+    pager: 'delta --dark --paging=never'
+  branchLogCmd: "git log --graph --color=always --pretty=format:'%C(bold yellow)%h%C(reset) - %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)%C(bold green)%d%C(reset)'"
+
