@@ -1,0 +1,24 @@
+[ghq]
+    root = ~/repos
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+[delta]
+    line-numbers = true
+    side-by-side = true
+    plus-style = green bold
+    minus-style = red bold
+[init]
+    defaultBranch = main
+[commit]
+    gpgsign = true
+[tag]
+    gpgsign = true
+[gpg]
+    program = gpg
+[url "github-uranum12:uranum12/"]
+    insteadOf = "https://github.com/uranum12/"
+[includeIf "hasconfig:remote.*.url:https://github.com/uranum12/**"]
+    path = uranum12.conf
