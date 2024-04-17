@@ -128,9 +128,7 @@ function zsh_prompt() {
         ssh_host="%F{3}%n%f@%F{3}%m%f:"
     fi
 
-    if [ -n "$VIRTUAL_ENV_PROMPT" ]; then
-        venv_prompt="$VIRTUAL_ENV_PROMPT"
-    elif [ -n "$VIRTUAL_ENV" ]; then
+    if [ -n "$VIRTUAL_ENV" ]; then
         venv_prompt="(${VIRTUAL_ENV##*/}) "
     fi
 
