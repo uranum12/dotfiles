@@ -76,3 +76,20 @@ if command -v ghq >/dev/null 2>&1; then
     bindkey '^g' ghq_repo
 fi
 
+# python
+function py() {
+    if [[ -n $VIRTUAL_ENV ]]; then
+        $VIRTUAL_ENV/bin/python "$@"
+    elif [[ -f ".venv/bin/python" ]]; then
+        .venv/bin/python "$@"
+    elif [[ -f "poetry.lock" ]]; then
+        poetry run python "$@"
+    elif [[ -f "Pipfile.lock" ]]; then
+        pipenv run python "$@"
+    elif [[ -f "pdm.lock" ]]; then
+        pdm run python "$@"
+    else
+        python "$@"
+    fi
+}
+
