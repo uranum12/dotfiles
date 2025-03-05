@@ -14,13 +14,13 @@ return {
         local deps = require("mini.deps")
         deps.setup({ path = { package = path_package } })
 
-        now = function(path)
+        local now = function(path)
             deps.now(function()
                 require(path).now(deps.add)
             end)
         end
 
-        later = function(path)
+        local later = function(path)
             deps.later(function()
                 require(path).later(deps.add)
             end)

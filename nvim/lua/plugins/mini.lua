@@ -193,6 +193,13 @@ return {
             window = { delay = 0 },
         })
 
+        local hipatterns = require('mini.hipatterns')
+        hipatterns.setup({
+            highlighters = {
+                hex_color = hipatterns.gen_highlighter.hex_color(),
+            },
+        })
+
         require("mini.cursorword").setup()
         require("mini.indentscope").setup()
         require("mini.pairs").setup()

@@ -16,5 +16,9 @@ return {
 
         add("lewis6991/gitsigns.nvim")
         require("gitsigns").setup()
+
+        add("kevinhwang91/nvim-hlslens")
+        require("hlslens").setup()
+        vim.api.nvim_set_hl(0, "HlSearchLens", { link = "Search" })
     end,
 }
