@@ -5,6 +5,9 @@ return {
         vim.keymap.set("n", "<leader>a", "<cmd>vsplit<cr>", { desc = "sprit (left/right)" })
         vim.keymap.set("n", "<leader>s", "<cmd>split<cr>", { desc = "spilit (top/bottom)" })
 
+        vim.keymap.set("n", "<tab>", "<cmd>bnext<cr>", { desc = "select next buffer" })
+        vim.keymap.set("n", "<s-tab>", "<cmd>bprev<cr>", { desc = "select previous buffer" })
+
         vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>")
 
         vim.keymap.set("n", "<leader>f", function()
