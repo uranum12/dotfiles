@@ -193,12 +193,24 @@ return {
             window = { delay = 0 },
         })
 
-        local hipatterns = require('mini.hipatterns')
+        local hipatterns = require("mini.hipatterns")
         hipatterns.setup({
             highlighters = {
                 hex_color = hipatterns.gen_highlighter.hex_color(),
             },
         })
+
+        local completion = require("mini.completion")
+        completion.setup({
+            window = {
+                info = { height = 25, width = 80, border = nil },
+                signature = { height = 25, width = 20, border = nil },
+            },
+        })
+
+        local icons = require("mini.icons")
+        icons.setup()
+        icons.tweak_lsp_kind()
 
         require("mini.cursorword").setup()
         require("mini.indentscope").setup()
