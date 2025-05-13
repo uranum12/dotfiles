@@ -1,5 +1,10 @@
 return {
     now = function(add)
+        local icons = require("mini.icons")
+        icons.setup()
+        icons.mock_nvim_web_devicons()
+        icons.tweak_lsp_kind()
+
         require("mini.basics").setup({
             options = {
                 basic = true,
@@ -207,10 +212,6 @@ return {
                 signature = { height = 25, width = 20, border = nil },
             },
         })
-
-        local icons = require("mini.icons")
-        icons.setup()
-        icons.tweak_lsp_kind()
 
         require("mini.cursorword").setup()
         require("mini.indentscope").setup()

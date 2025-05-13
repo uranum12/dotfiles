@@ -12,7 +12,6 @@ require("config.keymaps").setup()
 -- plugins
 local now, later = require("plugins.setup").setup()
 
-now("plugins.misc")
 later("plugins.misc")
 
 now("plugins.mini")

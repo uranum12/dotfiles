@@ -1,8 +1,4 @@
 return {
-    now = function(add)
-        add("nvim-tree/nvim-web-devicons")
-        require("nvim-web-devicons").setup()
-    end,
     later = function(add)
         add("akinsho/toggleterm.nvim")
         require("toggleterm").setup({
