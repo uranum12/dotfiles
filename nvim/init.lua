@@ -18,6 +18,6 @@ later("plugins.misc")
 now("plugins.mini")
 later("plugins.mini")
 
-later("plugins.completion")
+later("plugins.lsp")
 later("plugins.treesitter")
 later("plugins.telescope")
