@@ -8,6 +8,7 @@ vim.g.loaded_perl_provider = 0
 require("config.options").setup()
 require("config.autocmds").setup()
 require("config.keymaps").setup()
+require("config.commands").setup()
 
 -- plugins
 local now, later = require("plugins.setup").setup()
