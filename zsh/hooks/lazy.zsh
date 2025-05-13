@@ -8,8 +8,8 @@ if command -v eza >/dev/null 2>&1; then
     alias ll="eza -ahl --icons --time-style relative --group-directories-first"
     alias tree="eza -Thl --icons --time-style relative --group-directories-first"
 else
-    alias la="ls -a"
-    alias ll="ls -al"
+    alias la="ls -a --color"
+    alias ll="ls -al --color"
 fi
 
 if command -v trash >/dev/null 2>&1; then
@@ -88,6 +88,8 @@ function py() {
         pipenv run python "$@"
     elif [[ -f "pdm.lock" ]]; then
         pdm run python "$@"
+    elif command -v uv >/dev/null 2>&1; then
+        uv run "$@"
     else
         python "$@"
     fi
