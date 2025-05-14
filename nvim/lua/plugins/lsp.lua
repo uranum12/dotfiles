@@ -23,8 +23,15 @@ return {
         vim.lsp.enable({ "clangd" })
 
         vim.diagnostic.config({
+            signs = false,
             virtual_text = false,
-            virtual_lines = true,
+            virtual_lines = {
+                format = function(diagnostic)
+                    local prefix = diagnostic.code and string.format("%s: ", diagnostic.code) or ""
+                    local message = string.format("%s (%s)", diagnostic.message, diagnostic.source)
+                    return prefix .. message
+                end,
+            },
         })
     end,
 }
