@@ -3,7 +3,6 @@ return {
         local icons = require("mini.icons")
         icons.setup()
         icons.mock_nvim_web_devicons()
-        icons.tweak_lsp_kind()
 
         require("mini.diff").setup({
             view = {
@@ -209,14 +208,6 @@ return {
         hipatterns.setup({
             highlighters = {
                 hex_color = hipatterns.gen_highlighter.hex_color(),
-            },
-        })
-
-        local completion = require("mini.completion")
-        completion.setup({
-            window = {
-                info = { height = 25, width = 80, border = nil },
-                signature = { height = 25, width = 20, border = nil },
             },
         })
 
