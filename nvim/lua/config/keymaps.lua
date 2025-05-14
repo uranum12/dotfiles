@@ -7,7 +7,7 @@ return {
 
         vim.keymap.set("n", "<tab>", "<cmd>bnext<cr>", { desc = "select next buffer" })
         vim.keymap.set("n", "<s-tab>", "<cmd>bprev<cr>", { desc = "select previous buffer" })
-        vim.keymap.set("n", "<leader>q", "<cmd>X<cr>", { desc = "remove buffer" })
+        vim.keymap.set("n", "<leader>q", "<cmd>BufRemove<cr>", { desc = "remove buffer" })
 
         vim.keymap.set("t", "<esc><esc>", "<C-\\><C-n>")
 
