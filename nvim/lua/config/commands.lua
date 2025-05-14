@@ -1,27 +1,23 @@
 return {
     setup = function()
         vim.api.nvim_create_user_command("BufRemove", function()
-            local bufnr = vim.api.nvim_get_current_buf()
+            local bufnr_current = vim.fn.bufnr("%")
+            local bufnr_alt = vim.fn.bufnr("#")
 
-            local windows = vim.fn.win_findbuf(bufnr)
+            for _ = 2, vim.fn.tabpagenr("$") do
+                vim.cmd("tabclose 2")
+            end
+
+            local windows = vim.fn.win_findbuf(bufnr_current)
             for _, win in ipairs(windows) do
-                local alt = vim.fn.bufnr("#")
-                if vim.api.nvim_buf_is_valid(alt) and vim.api.nvim_buf_is_loaded(alt) then
-                    vim.api.nvim_win_set_buf(win, alt)
+                if bufnr_alt ~= -1 then
+                    vim.fn.win_execute(win, "buffer " .. bufnr_alt)
                 else
-                    vim.api.nvim_win_set_buf(win, vim.api.nvim_create_buf(true, false))
+                    vim.fn.win_execute(win, "enew")
                 end
             end
 
-            vim.api.nvim_buf_delete(bufnr, { force = false })
-
-            local total_tabs = vim.fn.tabpagenr("$")
-
-            if 2 <= total_tabs then
-                for i = 2, total_tabs do
-                    vim.cmd(i .. "tabclose")
-                end
-            end
+            vim.api.nvim_buf_delete(bufnr_current, { force = false })
         end, {})
     end,
 }
