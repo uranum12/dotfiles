@@ -19,5 +19,11 @@ return {
 
             vim.api.nvim_buf_delete(bufnr_current, { force = false })
         end, {})
+
+        vim.api.nvim_create_user_command("HiWord", function()
+            vim.fn.setreg("/", [[\<]] .. vim.fn.expand("<cword>") .. [[\>]])
+            vim.api.nvim_set_option_value("hlsearch", true, {})
+            require("hlslens").start()
+        end, {})
     end,
 }

@@ -1,6 +1,7 @@
 return {
     setup = function()
         vim.keymap.set("n", "<esc><esc>", "<cmd>nohlsearch<cr>")
+        vim.keymap.set("n", "<leader>h", "<cmd>HiWord<cr>", { desc = "highlight the word" })
 
         vim.keymap.set("n", "<leader>a", "<cmd>vsplit<cr>", { desc = "sprit (left/right)" })
         vim.keymap.set("n", "<leader>s", "<cmd>split<cr>", { desc = "spilit (top/bottom)" })
