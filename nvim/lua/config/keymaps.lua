@@ -1,7 +1,13 @@
 return {
     setup = function()
+        vim.keymap.set({ "n", "x" }, "j", "gj")
+        vim.keymap.set({ "n", "x" }, "k", "gk")
+        vim.keymap.set({ "n", "x" }, "H", "^")
+        vim.keymap.set({ "n", "x" }, "L", "$")
+        vim.keymap.set({ "n", "x" }, "W", "b")
+
         vim.keymap.set("n", "<esc><esc>", "<cmd>nohlsearch<cr>")
-        vim.keymap.set("n", "<leader>h", "<cmd>HiWord<cr>", { desc = "highlight the word" })
+        vim.keymap.set("n", "<leader><leader>", "<cmd>HiWord<cr>", { desc = "highlight the word" })
 
         vim.keymap.set("n", "<leader>a", "<cmd>vsplit<cr>", { desc = "sprit (left/right)" })
         vim.keymap.set("n", "<leader>s", "<cmd>split<cr>", { desc = "spilit (top/bottom)" })
