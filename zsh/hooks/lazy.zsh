@@ -47,6 +47,11 @@ if [ -e "$HOME/.rye/env" ]; then
     source "$HOME/.rye/env"
 fi
 
+# zabrze
+if command -v zabrze >/dev/null 2>&1; then
+    eval "$(zabrze init --bind-keys)"
+fi
+
 # zoxide
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"

@@ -52,54 +52,6 @@ fi
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# abbreviations
-typeset -A abbreviations
-abbreviations=(
-    ".." "cd .."
-    "c" "clear"
-    "g" "git"
-    "ga" "git add"
-    "gb" "git branch -a"
-    "gc" "git commit"
-    "gch" "git checkout"
-    "gcm" "git commit -m"
-    "gd" "git diff"
-    "gds" "git diff --cached"
-    "gg" "ghq get"
-    "gl" "git log --graph --oneline"
-    "glog" "git log --graph -n 10"
-    "gp" "git push"
-    "gs" "git status -sb"
-    "gst" "git stash"
-    "gsub" "git submodule"
-    "gtag" "git tag"
-    "gw" "git worktree"
-    "lg" "lazygit"
-    "rr" "rm -rf"
-    "t" "tmux"
-    "v" "nvim"
-)
-
-_expand_space() {
-    local expanded=${abbreviations[$LBUFFER]}
-    if [[ -n $expanded ]]; then
-        LBUFFER=$expanded
-    fi
-    zle self-insert
-}
-zle -N _expand_space
-bindkey ' ' _expand_space
-
-_expand_enter() {
-    zle accept-line
-    local expanded=${abbreviations[$LBUFFER]}
-    if [[ -n $expanded ]]; then
-        LBUFFER=$expanded
-    fi
-}
-zle -N _expand_enter
-bindkey "^m" _expand_enter
-
 # lazy load
 zsh-defer source "$ZDOTDIR/hooks/lazy.zsh"
 

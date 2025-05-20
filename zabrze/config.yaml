@@ -1,0 +1,62 @@
+abbrevs:
+  - name: neovim
+    abbr: v
+    snippet: nvim
+  - name: tmux
+    abbr: t
+    snippet: tmux
+  - name: clear
+    abbr: c
+    snippet: clear
+  - name: ..
+    abbr: ..
+    snippet: 'cd ..'
+  - name: lazygit
+    abbr: lg
+    snippet: lazygit
+  - name: ghq
+    abbr: gg
+    snippet: 'ghq get'
+  - name: git
+    abbr: g
+    snippet: git
+  - name: git commit
+    abbr: c
+    snippet: commit
+    global: true
+    context: '^git '
+  - name: git commit with message
+    abbr: cm
+    snippet: 'commit -m "{}"'
+    global: true
+    context: '^git '
+  - name: git diff
+    abbr: d
+    snippet: diff
+    global: true
+    context: '^git '
+  - name: git diff staged
+    abbr: ds
+    snippet: 'diff --cached'
+    global: true
+    context: '^git '
+  - name: git log
+    abbr: l
+    snippet: 'log --graph --oneline'
+    global: true
+    context: '^git '
+  - name: git long log
+    abbr: ll
+    snippet: 'log --graph -n 10'
+    global: true
+    context: '^git '
+  - name: git status
+    abbr: s
+    snippet: 'status -sb'
+    global: true
+    context: '^git '
+  - name: git push
+    abbr: p
+    snippet: 'push'
+    global: true
+    context: '^git '
