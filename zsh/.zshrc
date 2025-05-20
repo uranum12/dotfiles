@@ -1,27 +1,10 @@
-# source command override technique
-function source {
-    ensure_zcompiled $1
-    builtin source $1
-}
-function ensure_zcompiled {
-    local compiled="$1.zwc"
-    if [[ ! -r "$compiled" || "$1" -nt "$compiled" ]]; then
-        zcompile $1
-    fi
-}
-ensure_zcompiled "$ZDOTDIR/.zshrc"
-
 # plugins
 if command -v sheldon >/dev/null 2>&1; then
-    sheldon_cache="$ZDOTDIR/hooks/sheldon.zsh"
-    sheldon_toml="$HOME/.config/sheldon/plugins.toml"
-    if [[ ! -r "$sheldon_cache" || $sheldon_toml -nt "$sheldon_cache" ]]; then
-        sheldon source > $sheldon_cache
-    fi
-    source "$sheldon_cache"
-    unset sheldon_cache sheldon_toml
+    eval "$(sheldon source)"
 else
-    function zsh-defer() { $@ }
+    function zsh-defer() {
+        "$@"
+    }
 fi
 
 # options
@@ -101,7 +84,3 @@ function zsh_greeting() {
     print -P "       /      ${c}└─┘└─┘┴ ┴%f     *          ~+"
 }
 zsh_greeting
-
-# source command override technique
-zsh-defer unfunction source
-
