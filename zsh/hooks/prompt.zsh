@@ -30,6 +30,9 @@ function zsh_prompt() {
     echo -e "$ssh_host%F{4}%~%f $git_status\n$venv_prompt%(?.%F{2}.%F{1})❯%f "
 }
 
-function precmd() {
+function prompt_precmd() {
     PROMPT=$(zsh_prompt)
 }
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd prompt_precmd

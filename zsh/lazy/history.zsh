@@ -1,8 +1,11 @@
 # history
-function zshaddhistory() {
+function history_add() {
     emulate -L zsh
     [[ ${1%%$'\n'} != ${~HISTORY_IGNORE} ]]
 }
+
+autoload -Uz add-zsh-hook
+add-zsh-hook zshaddhistory history_add
 
 function history_select() {
     fc -RI
