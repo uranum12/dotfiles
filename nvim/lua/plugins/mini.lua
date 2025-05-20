@@ -181,11 +181,6 @@ return {
                 preview = true,
             },
         })
-        vim.api.nvim_create_user_command("Files", function()
-            if not MiniFiles.close() then
-                MiniFiles.open()
-            end
-        end, {})
 
         require("mini.notify").setup()
         vim.notify = require("mini.notify").make_notify()

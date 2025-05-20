@@ -25,5 +25,11 @@ return {
             vim.api.nvim_set_option_value("hlsearch", true, {})
             require("hlslens").start()
         end, {})
+
+        vim.api.nvim_create_user_command("Files", function()
+            if not require("mini.files").close() then
+                require("mini.files").open()
+            end
+        end, {})
     end,
 }
