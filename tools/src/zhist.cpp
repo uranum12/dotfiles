@@ -1,7 +1,69 @@
+#include <chrono>
+#include <exception>
+#include <filesystem>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <argparse/argparse.hpp>
+
+namespace fs = std::filesystem;
+
+constexpr auto sql_db_init = R"sql(
+    CREATE TABLE IF NOT EXISTS histories (
+        id INTEGER PRIMARY KEY,
+        command TEXT NOT NULL,
+        directory TEXT,
+        return_code INTEGER,
+        time INTEGER NOT NULL,
+        UNIQUE(command, directory, return_code)
+    );
+    CREATE INDEX IF NOT EXISTS idx_filter ON histories(return_code, directory, time);
+)sql";
+
+constexpr auto sql_insert = R"sql(
+    INSERT OR REPLACE INTO histories (command, directory, return_code, time)
+    VALUES (?, ?, ?, ?)
+)sql";
+
+fs::path home_dir() {
+    const char *home = std::getenv("HOME");
+    if (home == nullptr) {
+        throw std::runtime_error("can't get HOME");
+    }
+    return fs::path(home);
+}
+
+void init(const fs::path &db_dir, const fs::path &db_path) {
+    if (!fs::exists(db_dir)) {
+        fs::create_directory(db_dir);
+    }
+    SQLite::Database db(db_path, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    db.exec(sql_db_init);
+}
+
+void add(const fs::path &db_path, const std::string &cmd,
+         const std::string &dir, int code) {
+    auto pos = cmd.find_first_not_of(" \t\n\v\f\r");
+    if (pos == std::string::npos || cmd[pos] == '#') {
+        return;
+    }
+
+    auto now = std::chrono::system_clock::now();
+    auto time = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    now.time_since_epoch())
+                    .count();
+
+    auto db = SQLite::Database(db_path, SQLite::OPEN_READWRITE);
+
+    SQLite::Statement insert(db, sql_insert);
+    insert.bind(1, cmd);
+    insert.bind(2, dir);
+    insert.bind(3, code);
+    insert.bind(4, time);
+    insert.exec();
+}
 
 int main(int argc, char *argv[]) {
     argparse::ArgumentParser program("zhist");
@@ -54,8 +116,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    auto db_dir = home_dir() / ".local/share/zhist";
+    auto db_path = db_dir / "zhist.db";
+
     if (program.is_subcommand_used("init")) {
-        std::cout << "init" << std::endl;
+        init(db_dir, db_path);
 
         return 0;
     }
@@ -64,9 +129,13 @@ int main(int argc, char *argv[]) {
         auto cmd = add_command.get<std::string>("--command");
         auto dir = add_command.get<std::string>("--directory");
         auto ret = add_command.get<int>("--return-code");
-        std::cout << "cmd: " << cmd << std::endl;
-        std::cout << "dir: " << dir << std::endl;
-        std::cout << "ret: " << ret << std::endl;
+
+        try {
+            add(db_path, cmd, dir, ret);
+        } catch (const std::exception &e) {
+            std::cerr << e.what();
+            return 1;
+        }
 
         return 0;
     }
