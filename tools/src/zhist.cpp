@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <argparse/argparse.hpp>
@@ -25,6 +26,17 @@ constexpr auto sql_db_init = R"sql(
 constexpr auto sql_insert = R"sql(
     INSERT OR REPLACE INTO histories (command, directory, return_code, time)
     VALUES (?, ?, ?, ?)
+)sql";
+
+constexpr auto sql_select = R"sql(
+    SELECT command FROM histories
+    WHERE return_code = 0 AND directory = ?
+    ORDER BY time ASC
+)sql";
+
+constexpr auto sql_select_all = R"sql(
+    SELECT DISTINCT command FROM histories
+    ORDER BY time ASC
 )sql";
 
 fs::path home_dir() {
@@ -65,6 +77,35 @@ void add(const fs::path &db_path, const std::string &cmd,
     insert.exec();
 }
 
+std::vector<std::string> select(const fs::path &db_path) {
+    auto current = fs::current_path();
+
+    SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
+
+    SQLite::Statement query(db, sql_select);
+    query.bind(1, static_cast<std::string>(current));
+
+    std::vector<std::string> commands;
+    while (query.executeStep()) {
+        commands.push_back(query.getColumn(0).getString());
+    }
+
+    return commands;
+}
+
+std::vector<std::string> select_all(const fs::path &db_path) {
+    SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
+
+    SQLite::Statement query(db, sql_select_all);
+
+    std::vector<std::string> commands;
+    while (query.executeStep()) {
+        commands.push_back(query.getColumn(0).getString());
+    }
+
+    return commands;
+}
+
 int main(int argc, char *argv[]) {
     argparse::ArgumentParser program("zhist");
     program.add_description("history command using sqlite");
@@ -83,24 +124,8 @@ int main(int argc, char *argv[]) {
 
     argparse::ArgumentParser list_command("list");
     list_command.add_description("list history");
-    auto &return_code_group = list_command.add_mutually_exclusive_group(false);
-    return_code_group.add_argument("-r", "--return-code")
-        .help("return code")
-        .scan<'i', int>();
-    return_code_group.add_argument("-s", "--only-success")
-        .help("filter return code is success")
-        .default_value(false)
-        .implicit_value(true);
-    ;
-    return_code_group.add_argument("-f", "--only-failure")
-        .help("filter return code is failure")
-        .default_value(false)
-        .implicit_value(true);
-    ;
-    auto &directory_group = list_command.add_mutually_exclusive_group(false);
-    directory_group.add_argument("-d", "--directory").help("directory");
-    directory_group.add_argument("-c", "--current-directory")
-        .help("current directory")
+    list_command.add_argument("-a", "--all")
+        .help("list all commands")
         .default_value(false)
         .implicit_value(true);
 
@@ -141,23 +166,13 @@ int main(int argc, char *argv[]) {
     }
 
     if (program.is_subcommand_used("list")) {
-        if (auto ret = list_command.present<int>("--return-code")) {
-            std::cout << "return code: " << *ret << std::endl;
-        } else if (list_command.get<bool>("--only-success")) {
-            std::cout << "only success" << std::endl;
-        } else if (list_command.get<bool>("--only-failure")) {
-            std::cout << "only failure" << std::endl;
-        } else {
-            std::cout << "all return code" << std::endl;
-        }
+        auto commands = list_command.get<bool>("--all") ? select_all(db_path)
+                                                        : select(db_path);
 
-        if (auto dir = list_command.present<std::string>("--directory")) {
-            std::cout << "directory: " << *dir << std::endl;
-        } else if (list_command.get<bool>("--current-directory")) {
-            std::cout << "current directory" << std::endl;
-        } else {
-            std::cout << "all directory" << std::endl;
+        for (const auto &command : commands) {
+            std::cout << command << '\n';
         }
+        std::cout << std::flush;
 
         return 0;
     }
