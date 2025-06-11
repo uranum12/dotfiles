@@ -1,8 +1,10 @@
+#include <algorithm>
 #include <chrono>
 #include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -272,7 +274,7 @@ int main(int argc, char *argv[]) {
                         : is_recent ? select_recent(db_path)
                                     : select(db_path);
 
-        for (const auto &command : commands) {
+        for (const auto &command : commands | std::views::reverse) {
             std::cout << command << '\n';
         }
         std::cout << std::flush;
