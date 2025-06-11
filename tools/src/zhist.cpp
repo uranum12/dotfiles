@@ -71,7 +71,7 @@ constexpr auto sql_select_all = R"sql(
 )sql";
 
 constexpr auto sql_select_recent = R"sql(
-    SELECT command FROM histories
+    SELECT DISTINCT command FROM histories
     WHERE return_code = 0
     ORDER BY time DESC
     LIMIT 100;
