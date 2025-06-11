@@ -1,3 +1,5 @@
 /build/
 /.cache/
-CmakeUserPresets.json
+/subprojects/*
+!/subprojects/argparse.wrap
+!/subprojects/sqlitecpp.wrap

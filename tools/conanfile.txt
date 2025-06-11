@@ -1,7 +1,0 @@
-[requires]
-argparse/3.2
-sqlitecpp/3.3.2
-
-[generators]
-CMakeDeps
-CMakeToolchain

@@ -3,7 +3,8 @@
 ## build
 
 ```sh
-conan install . --output-folder=build --build=missing --settings=build_type=Release
-cmake -G Ninja -B build --preset conan-release
+meson setup build --prefix $HOME/.local
+meson compile -C build
+meson install -C build --skip-subprojects
 ```
 
