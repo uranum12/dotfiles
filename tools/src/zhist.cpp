@@ -70,6 +70,13 @@ constexpr auto sql_select_all = R"sql(
     ORDER BY time ASC
 )sql";
 
+constexpr auto sql_select_recent = R"sql(
+    SELECT command FROM histories
+    WHERE return_code = 0
+    ORDER BY time DESC
+    LIMIT 100;
+)sql";
+
 fs::path home_dir() {
     const char *home = std::getenv("HOME");
     if (home == nullptr) {
@@ -155,6 +162,19 @@ std::vector<std::string> select_all(const fs::path &db_path) {
     return commands;
 }
 
+std::vector<std::string> select_recent(const fs::path &db_path) {
+    SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
+
+    SQLite::Statement query(db, sql_select_recent);
+
+    std::vector<std::string> commands;
+    while (query.executeStep()) {
+        commands.push_back(query.getColumn(0).getString());
+    }
+
+    return commands;
+}
+
 int main(int argc, char *argv[]) {
     argparse::ArgumentParser program("zhist");
     program.add_description("history command using sqlite");
@@ -177,8 +197,13 @@ int main(int argc, char *argv[]) {
 
     argparse::ArgumentParser list_command("list");
     list_command.add_description("list history");
-    list_command.add_argument("-a", "--all")
+    auto &filter_group = list_command.add_mutually_exclusive_group();
+    filter_group.add_argument("-a", "--all")
         .help("list all commands")
+        .default_value(false)
+        .implicit_value(true);
+    filter_group.add_argument("-r", "--recent")
+        .help("list recent success commands")
         .default_value(false)
         .implicit_value(true);
 
@@ -240,8 +265,12 @@ int main(int argc, char *argv[]) {
     }
 
     if (program.is_subcommand_used("list")) {
-        auto commands = list_command.get<bool>("--all") ? select_all(db_path)
-                                                        : select(db_path);
+        auto is_all = list_command.get<bool>("--all");
+        auto is_recent = list_command.get<bool>("--recent");
+
+        auto commands = is_all      ? select_all(db_path)
+                        : is_recent ? select_recent(db_path)
+                                    : select(db_path);
 
         for (const auto &command : commands) {
             std::cout << command << '\n';
