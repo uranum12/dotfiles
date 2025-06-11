@@ -1,6 +1,7 @@
 #include <chrono>
 #include <exception>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -17,7 +18,7 @@ constexpr auto sql_db_init = R"sql(
         command TEXT NOT NULL,
         directory TEXT,
         return_code INTEGER,
-        time INTEGER NOT NULL,
+        time INTEGER,
         UNIQUE(command, directory, return_code)
     );
     CREATE INDEX IF NOT EXISTS idx_filter ON histories(return_code, directory, time);
@@ -26,6 +27,36 @@ constexpr auto sql_db_init = R"sql(
 constexpr auto sql_insert = R"sql(
     INSERT OR REPLACE INTO histories (command, directory, return_code, time)
     VALUES (?, ?, ?, ?)
+)sql";
+
+constexpr auto sql_insert_command = R"sql(
+    INSERT OR IGNORE INTO histories (command) VALUES (?)
+)sql";
+
+constexpr auto sql_delete_duplicate = R"sql(
+    WITH duplicated_commands AS (
+        SELECT command
+        FROM histories
+        WHERE directory IS NULL AND return_code IS NULL
+        GROUP BY command
+        HAVING COUNT(*) > 1
+    ),
+    histories_to_keep AS (
+        SELECT MIN(id) AS id
+        FROM histories
+        WHERE directory IS NULL AND return_code IS NULL
+          AND command IN (SELECT command FROM duplicated_commands)
+        GROUP BY command
+    ),
+    histories_to_delete AS (
+        SELECT id
+        FROM histories
+        WHERE directory IS NULL AND return_code IS NULL
+          AND command IN (SELECT command FROM duplicated_commands)
+          AND id NOT IN (SELECT id FROM histories_to_keep)
+    )
+    DELETE FROM histories
+    WHERE id IN (SELECT id FROM histories_to_delete);
 )sql";
 
 constexpr auto sql_select = R"sql(
@@ -55,10 +86,14 @@ void init(const fs::path &db_dir, const fs::path &db_path) {
     db.exec(sql_db_init);
 }
 
+bool is_command_valid(const std::string &cmd) {
+    auto pos = cmd.find_first_not_of(" \t\n\v\f\r");
+    return pos != std::string::npos && cmd[pos] != '#';
+}
+
 void add(const fs::path &db_path, const std::string &cmd,
          const std::string &dir, int code) {
-    auto pos = cmd.find_first_not_of(" \t\n\v\f\r");
-    if (pos == std::string::npos || cmd[pos] == '#') {
+    if (!is_command_valid(cmd)) {
         return;
     }
 
@@ -75,6 +110,20 @@ void add(const fs::path &db_path, const std::string &cmd,
     insert.bind(3, code);
     insert.bind(4, time);
     insert.exec();
+}
+
+void load(const fs::path &db_path, const std::vector<std::string> &cmds) {
+    SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
+
+    for (const auto &cmd : cmds) {
+        if (is_command_valid(cmd)) {
+            SQLite::Statement insert(db, sql_insert_command);
+            insert.bind(1, cmd);
+            insert.exec();
+        }
+    }
+
+    db.exec(sql_delete_duplicate);
 }
 
 std::vector<std::string> select(const fs::path &db_path) {
@@ -122,6 +171,10 @@ int main(int argc, char *argv[]) {
         .scan<'i', int>()
         .required();
 
+    argparse::ArgumentParser load_command("load");
+    load_command.add_description("load history file to database");
+    load_command.add_argument("filename").help("history file name");
+
     argparse::ArgumentParser list_command("list");
     list_command.add_description("list history");
     list_command.add_argument("-a", "--all")
@@ -131,6 +184,7 @@ int main(int argc, char *argv[]) {
 
     program.add_subparser(init_command);
     program.add_subparser(add_command);
+    program.add_subparser(load_command);
     program.add_subparser(list_command);
 
     try {
@@ -161,6 +215,26 @@ int main(int argc, char *argv[]) {
             std::cerr << e.what();
             return 1;
         }
+
+        return 0;
+    }
+
+    if (program.is_subcommand_used("load")) {
+        auto filename = load_command.get<std::string>("filename");
+
+        std::ifstream ifs(filename);
+        if (!ifs) {
+            std::cerr << "can't open file" << std::endl;
+            return 1;
+        }
+
+        std::string line;
+        std::vector<std::string> lines;
+        while (std::getline(ifs, line)) {
+            lines.push_back(line);
+        }
+
+        load(db_path, lines);
 
         return 0;
     }
