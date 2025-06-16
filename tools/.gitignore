@@ -1,5 +1,2 @@
 /build/
 /.cache/
-/subprojects/*
-!/subprojects/argparse.wrap
-!/subprojects/sqlitecpp.wrap
