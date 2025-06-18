@@ -25,7 +25,8 @@ setopt list_packed          # 表示をコンパクトに
 zsh-defer source "$ZDOTDIR/hooks/lazy.zsh"
 
 # prompt
-source "$ZDOTDIR/hooks/prompt.zsh"
+setopt promptsubst
+PROMPT='$(zprompt $?)'
 
 # greeting
 source "$ZDOTDIR/hooks/greeting.zsh"

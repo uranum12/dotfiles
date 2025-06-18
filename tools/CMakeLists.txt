@@ -3,19 +3,39 @@ project("tools" C CXX)
 
 include(FetchContent)
 
+# overwrite install() command with a dummy macro
+macro(install)
+    # nop
+endmacro()
+
 fetchcontent_declare(argparse
                      GIT_REPOSITORY https://github.com/p-ranav/argparse.git)
 fetchcontent_makeavailable(argparse)
 
 set(SQLITECPP_INSTALL OFF)
-fetchcontent_populate(
+fetchcontent_declare(
     sqlitecpp
     GIT_REPOSITORY https://github.com/SRombauts/SQLiteCpp.git
     GIT_TAG 3.3.3)
-add_subdirectory(${sqlitecpp_SOURCE_DIR})
+fetchcontent_makeavailable(sqlitecpp)
+
+fetchcontent_declare(
+    fmtlib
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG 11.2.0)
+fetchcontent_makeavailable(fmtlib)
+
+find_package(libgit2 REQUIRED)
 
 add_executable(zhist src/zhist.cpp)
 target_compile_features(zhist PRIVATE cxx_std_20)
 target_link_libraries(zhist PRIVATE argparse SQLiteCpp sqlite3 pthread dl)
 
-install(TARGETS zhist RUNTIME DESTINATION bin)
+add_executable(
+    zprompt src/zprompt.cpp src/zprompt/cwd.cpp src/zprompt/git.cpp
+            src/zprompt/ret.cpp src/zprompt/ssh.cpp src/zprompt/venv.cpp)
+target_compile_features(zprompt PRIVATE cxx_std_20)
+target_include_directories(zprompt PRIVATE include)
+target_link_libraries(zprompt PRIVATE fmt::fmt libgit2::libgit2package argparse)
+
+_install(TARGETS zhist zprompt RUNTIME DESTINATION bin)
