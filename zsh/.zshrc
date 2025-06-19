@@ -29,5 +29,4 @@ setopt promptsubst
 PROMPT='$(zprompt $?)'
 
 # greeting
-source "$ZDOTDIR/hooks/greeting.zsh"
-zsh_greeting
+zgreeting

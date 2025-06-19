@@ -38,4 +38,15 @@ target_compile_features(zprompt PRIVATE cxx_std_20)
 target_include_directories(zprompt PRIVATE include)
 target_link_libraries(zprompt PRIVATE fmt::fmt libgit2::libgit2package argparse)
 
-_install(TARGETS zhist zprompt RUNTIME DESTINATION bin)
+add_executable(zgreeting src/zgreeting.cpp)
+target_compile_features(zgreeting PRIVATE cxx_std_20)
+target_link_libraries(zgreeting PRIVATE fmt::fmt)
+
+_install(
+    TARGETS
+    zhist
+    zprompt
+    zgreeting
+    RUNTIME
+    DESTINATION
+    bin)
