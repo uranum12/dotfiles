@@ -3,7 +3,6 @@
 #include <exception>
 #include <iostream>
 
-#include <fmt/core.h>
 #include <argparse/argparse.hpp>
 
 int main(int argc, char* argv[]) {
@@ -26,8 +25,8 @@ int main(int argc, char* argv[]) {
     auto venv_status = get_venv_status();
     auto return_code = get_return_code(ret);
 
-    fmt::print("{}{}{}\n{}{}", ssh_status, cwd, git_status, venv_status,
-               return_code);
+    std::cout << std::format("{}{}{}\n{}{}", ssh_status, cwd, git_status,
+                             venv_status, return_code);
 
     return 0;
 }

@@ -3,9 +3,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
+#include <format>
 #include <string>
-
-#include <fmt/core.h>
 
 std::string get_venv_status() {
     std::string result;
@@ -16,7 +15,7 @@ std::string get_venv_status() {
     } else if (const char* venv_env = std::getenv("VIRTUAL_ENV");
                venv_env != nullptr && std::strlen(venv_env) > 0) {
         std::filesystem::path venv_path(venv_env);
-        result = fmt::format("({}) ", venv_path.filename().string());
+        result = std::format("({}) ", venv_path.filename().string());
     }
 
     return result;

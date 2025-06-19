@@ -6,12 +6,9 @@
 
 #include <git2.h>
 
-#include <fmt/color.h>
-#include <fmt/core.h>
-
 namespace {
 
-constexpr auto color_git = fmt::fg(fmt::terminal_color::green);
+constexpr auto color_git = Color::green;
 
 std::optional<std::string> get_branch_name(git_reference* head_ref) {
     if (git_reference_is_branch(head_ref) == 1) {
@@ -75,17 +72,17 @@ std::string get_git_status() {
         if (git_repository_head(&head_ref, repo) == 0) {
             auto branch_name = get_branch_name(head_ref);
             if (branch_name.has_value()) {
-                result = fmt::format(color_git, " {}", branch_name.value());
+                result = color_wrap(color_git, " " + branch_name.value());
             } else {
                 const auto* head_oid = git_reference_target(head_ref);
 
                 if (auto tags = get_tags(repo, head_oid); !tags.empty()) {
                     for (auto& tag : tags) {
-                        result += " #" + fmt::format(color_git, "{}", tag);
+                        result += " #" + color_wrap(color_git, tag);
                     }
                 } else {
                     auto commit_hash = get_commit_hash(head_oid);
-                    result = " @" + fmt::format(color_git, "{}", commit_hash);
+                    result = " @" + color_wrap(color_git, commit_hash);
                 }
             }
             git_reference_free(head_ref);

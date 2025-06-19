@@ -36,7 +36,7 @@ add_executable(
             src/zprompt/ret.cpp src/zprompt/ssh.cpp src/zprompt/venv.cpp)
 target_compile_features(zprompt PRIVATE cxx_std_20)
 target_include_directories(zprompt PRIVATE include)
-target_link_libraries(zprompt PRIVATE fmt::fmt libgit2::libgit2package argparse)
+target_link_libraries(zprompt PRIVATE libgit2::libgit2package argparse)
 
 add_executable(zgreeting src/zgreeting.cpp)
 target_compile_features(zgreeting PRIVATE cxx_std_20)

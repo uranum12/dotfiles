@@ -3,19 +3,16 @@
 #include <algorithm>
 #include <array>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
 #include <string>
-
-#include <fmt/color.h>
-#include <fmt/core.h>
 
 namespace fs = std::filesystem;
 
 namespace {
 
-constexpr fmt::text_style color_anchor =
-    fmt::fg(fmt::terminal_color::magenta) | fmt::emphasis::bold;
-constexpr fmt::text_style color_normal = fmt::fg(fmt::terminal_color::blue);
+constexpr auto color_anchor = Color::magenta;
+constexpr auto color_normal = Color::blue;
 
 constexpr auto pwd_markers = std::to_array({
     ".git",
@@ -41,17 +38,17 @@ std::string format_path() {
 
     for (const auto& part : current_path) {
         if (part == accumulated_path) {
-            result = fmt::format(color_normal, "/");
+            result = color_wrap(color_normal, "/");
             continue;
         }
 
         accumulated_path /= part;
 
         if (has_marker(accumulated_path)) {
-            result += fmt::format(color_normal, "/") +
-                      fmt::format(color_anchor, "{}", part.string());
+            result += color_wrap(color_normal, "/") +
+                      color_wrap(color_anchor, part.string());
         } else {
-            result += fmt::format(color_normal, "/{}", part.string());
+            result += color_wrap(color_normal, "/" + part.string());
         }
     }
 
@@ -65,19 +62,19 @@ std::string format_path(const fs::path& home_path) {
 
     for (const auto& part : current_path) {
         if (part == accumulated_path) {
-            result = fmt::format(color_normal, "/");
+            result = color_wrap(color_normal, "/");
             continue;
         }
 
         accumulated_path /= part;
 
         if (accumulated_path == home_path) {
-            result = fmt::format(color_normal, "~");
+            result = color_wrap(color_normal, "~");
         } else if (has_marker(accumulated_path)) {
-            result += fmt::format(color_normal, "/") +
-                      fmt::format(color_anchor, "{}", part.string());
+            result += color_wrap(color_normal, "/") +
+                      color_wrap(color_anchor, part.string());
         } else {
-            result += fmt::format(color_normal, "/{}", part.string());
+            result += color_wrap(color_normal, "/" + part.string());
         }
     }
 

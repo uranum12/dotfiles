@@ -7,12 +7,9 @@
 #include <cstring>
 #include <string>
 
-#include <fmt/color.h>
-#include <fmt/core.h>
-
 namespace {
 
-constexpr auto color_ssh = fmt::fg(fmt::terminal_color::yellow);
+constexpr auto color_ssh = Color::yellow;
 
 std::string get_username() {
     struct passwd* pw = getpwuid(geteuid());
@@ -36,8 +33,8 @@ std::string get_ssh_status() {
         auto user = get_username();
         auto host = get_hostname();
 
-        result = fmt::format(color_ssh, "{}", user) + "@" +
-                 fmt::format(color_ssh, "{}", host) + ":";
+        result = color_wrap(color_ssh, user) + "@" +
+                 color_wrap(color_ssh, host) + ":";
     }
 
     return result;

@@ -1,19 +1,17 @@
 #include "zprompt.hpp"
 
+#include <format>
 #include <string>
-
-#include <fmt/color.h>
-#include <fmt/core.h>
 
 namespace {
 
-constexpr auto color_success = fmt::fg(fmt::terminal_color::green);
-constexpr auto color_failure = fmt::fg(fmt::terminal_color::red);
+constexpr auto color_success = Color::green;
+constexpr auto color_failure = Color::red;
 
 }  // namespace
 
 std::string get_return_code(int return_code) {
     return return_code == 0
-               ? fmt::format(color_success, "❯ ")
-               : fmt::format(color_failure, "({}) ❯ ", return_code);
+               ? color_wrap(color_success, "❯ ")
+               : color_wrap(color_failure, std::format("({}) ❯ ", return_code));
 }
