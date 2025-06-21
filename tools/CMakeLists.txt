@@ -42,11 +42,16 @@ add_executable(zgreeting src/zgreeting.cpp)
 target_compile_features(zgreeting PRIVATE cxx_std_20)
 target_link_libraries(zgreeting PRIVATE fmt::fmt)
 
+add_executable(tmux-status src/tmux-status.cpp)
+target_compile_features(tmux-status PRIVATE cxx_std_20)
+target_link_libraries(tmux-status PRIVATE libgit2::libgit2package argparse)
+
 _install(
     TARGETS
     zhist
     zprompt
     zgreeting
+    tmux-status
     RUNTIME
     DESTINATION
     bin)
