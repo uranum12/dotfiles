@@ -122,11 +122,11 @@ std::string Status::format() {
 
     if (0 < ahead_) {
         items.emplace_back(
-            color_wrap(color_ahead, std::format("↑{} ", ahead_)));
+            color_wrap(color_ahead, std::format("↑{}", ahead_)));
     }
     if (0 < behind_) {
         items.emplace_back(
-            color_wrap(color_behind, std::format("↓{} ", behind_)));
+            color_wrap(color_behind, std::format("↓{}", behind_)));
     }
 
     if (0 < staged_) {
