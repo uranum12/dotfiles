@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
+#include <ranges>
 #include <string>
 
 namespace fs = std::filesystem;
@@ -13,6 +14,7 @@ namespace {
 
 constexpr auto color_anchor = Color::magenta;
 constexpr auto color_normal = Color::blue;
+constexpr auto color_error = Color::red;
 
 constexpr auto pwd_markers = std::to_array({
     ".git",
@@ -31,19 +33,22 @@ bool has_marker(const fs::path& dir) {
     });
 }
 
-std::string format_path() {
-    std::string result;
-    auto current_path = fs::current_path();
-    auto accumulated_path = current_path.root_directory();
+bool is_subpath(const fs::path& base, const fs::path& path) {
+    auto base_size = std::distance(base.begin(), base.end());
+    return std::ranges::equal(base, path | std::views::take(base_size));
+}
 
-    for (const auto& part : current_path) {
-        if (part == accumulated_path) {
-            result = color_wrap(color_normal, "/");
-            continue;
-        }
+std::string format_path(const fs::path& home_path, const fs::path& pwd_path) {
+    std::string result = color_wrap(color_normal, "~");
 
+    if (home_path == pwd_path) {
+        return result;
+    }
+
+    auto accumulated_path = home_path;
+
+    for (const auto& part : fs::relative(pwd_path, home_path)) {
         accumulated_path /= part;
-
         if (has_marker(accumulated_path)) {
             result += color_wrap(color_normal, "/") +
                       color_wrap(color_anchor, part.string());
@@ -55,22 +60,13 @@ std::string format_path() {
     return result;
 }
 
-std::string format_path(const fs::path& home_path) {
+std::string format_path(const fs::path& pwd_path) {
     std::string result;
-    auto current_path = fs::current_path();
-    auto accumulated_path = current_path.root_directory();
+    auto accumulated_path = fs::path("/");
 
-    for (const auto& part : current_path) {
-        if (part == accumulated_path) {
-            result = color_wrap(color_normal, "/");
-            continue;
-        }
-
+    for (const auto& part : pwd_path | std::views::drop(1)) {
         accumulated_path /= part;
-
-        if (accumulated_path == home_path) {
-            result = color_wrap(color_normal, "~");
-        } else if (has_marker(accumulated_path)) {
+        if (has_marker(accumulated_path)) {
             result += color_wrap(color_normal, "/") +
                       color_wrap(color_anchor, part.string());
         } else {
@@ -84,10 +80,19 @@ std::string format_path(const fs::path& home_path) {
 }  // namespace
 
 std::string get_current_directory() {
-    const auto* home_env = getenv("HOME");
-    if (home_env != nullptr && strlen(home_env) > 0) {
-        auto home_path = fs::path(home_env);
-        return format_path(home_path);
+    try {
+        auto pwd_path = fs::current_path();
+
+        const auto* home_env = getenv("HOME");
+        if (home_env != nullptr && strlen(home_env) > 0) {
+            auto home_path = fs::path(home_env);
+            if (is_subpath(home_path, pwd_path)) {
+                return format_path(home_path, pwd_path);
+            }
+        }
+
+        return format_path(pwd_path);
+    } catch (const fs::filesystem_error& e) {
+        return color_wrap(color_error, "unknown");
     }
-    return format_path();
 }
