@@ -121,8 +121,7 @@ std::string Status::format() {
     std::vector<std::string> items;
 
     if (0 < ahead_) {
-        items.emplace_back(
-            color_wrap(color_ahead, std::format("↑{}", ahead_)));
+        items.emplace_back(color_wrap(color_ahead, std::format("↑{}", ahead_)));
     }
     if (0 < behind_) {
         items.emplace_back(

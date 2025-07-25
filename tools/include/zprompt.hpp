@@ -17,7 +17,7 @@ enum class Color : uint8_t {
     white,
 };
 
-inline std::string color_wrap(Color color, const std::string &str) {
+inline std::string color_wrap(Color color, const std::string& str) {
     return std::format("%F{{{}}}{}%f",
                        static_cast<std::underlying_type_t<Color>>(color), str);
 }

@@ -79,14 +79,14 @@ constexpr auto sql_select_recent = R"sql(
 )sql";
 
 fs::path home_dir() {
-    const char *home = std::getenv("HOME");
+    const char* home = std::getenv("HOME");
     if (home == nullptr) {
         throw std::runtime_error("can't get HOME");
     }
     return fs::path(home);
 }
 
-void init(const fs::path &db_dir, const fs::path &db_path) {
+void init(const fs::path& db_dir, const fs::path& db_path) {
     if (!fs::exists(db_dir)) {
         fs::create_directory(db_dir);
     }
@@ -94,13 +94,13 @@ void init(const fs::path &db_dir, const fs::path &db_path) {
     db.exec(sql_db_init);
 }
 
-bool is_command_valid(const std::string &cmd) {
+bool is_command_valid(const std::string& cmd) {
     auto pos = cmd.find_first_not_of(" \t\n\v\f\r");
     return pos != std::string::npos && cmd[pos] != '#';
 }
 
-void add(const fs::path &db_path, const std::string &cmd,
-         const std::string &dir, int code) {
+void add(const fs::path& db_path, const std::string& cmd,
+         const std::string& dir, int code) {
     if (!is_command_valid(cmd)) {
         return;
     }
@@ -120,10 +120,10 @@ void add(const fs::path &db_path, const std::string &cmd,
     insert.exec();
 }
 
-void load(const fs::path &db_path, const std::vector<std::string> &cmds) {
+void load(const fs::path& db_path, const std::vector<std::string>& cmds) {
     SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
 
-    for (const auto &cmd : cmds) {
+    for (const auto& cmd : cmds) {
         if (is_command_valid(cmd)) {
             SQLite::Statement insert(db, sql_insert_command);
             insert.bind(1, cmd);
@@ -134,7 +134,7 @@ void load(const fs::path &db_path, const std::vector<std::string> &cmds) {
     db.exec(sql_delete_duplicate);
 }
 
-std::vector<std::string> select(const fs::path &db_path) {
+std::vector<std::string> select(const fs::path& db_path) {
     auto current = fs::current_path();
 
     SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
@@ -150,7 +150,7 @@ std::vector<std::string> select(const fs::path &db_path) {
     return commands;
 }
 
-std::vector<std::string> select_all(const fs::path &db_path) {
+std::vector<std::string> select_all(const fs::path& db_path) {
     SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
 
     SQLite::Statement query(db, sql_select_all);
@@ -163,7 +163,7 @@ std::vector<std::string> select_all(const fs::path &db_path) {
     return commands;
 }
 
-std::vector<std::string> select_recent(const fs::path &db_path) {
+std::vector<std::string> select_recent(const fs::path& db_path) {
     SQLite::Database db(db_path, SQLite::OPEN_READWRITE);
 
     SQLite::Statement query(db, sql_select_recent);
@@ -176,7 +176,7 @@ std::vector<std::string> select_recent(const fs::path &db_path) {
     return commands;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     argparse::ArgumentParser program("zhist");
     program.add_description("history command using sqlite");
 
@@ -198,7 +198,7 @@ int main(int argc, char *argv[]) {
 
     argparse::ArgumentParser list_command("list");
     list_command.add_description("list history");
-    auto &filter_group = list_command.add_mutually_exclusive_group();
+    auto& filter_group = list_command.add_mutually_exclusive_group();
     filter_group.add_argument("-a", "--all")
         .help("list all commands")
         .default_value(false)
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
 
     try {
         program.parse_args(argc, argv);
-    } catch (const std::exception &err) {
+    } catch (const std::exception& err) {
         std::cerr << err.what() << std::endl;
         std::cerr << program;
         return 1;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
 
         try {
             add(db_path, cmd, dir, ret);
-        } catch (const std::exception &e) {
+        } catch (const std::exception& e) {
             std::cerr << e.what();
             return 1;
         }
@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
                         : is_recent ? select_recent(db_path)
                                     : select(db_path);
 
-        for (const auto &command : commands | std::views::reverse) {
+        for (const auto& command : commands | std::views::reverse) {
             std::cout << command << '\n';
         }
         std::cout << std::flush;
