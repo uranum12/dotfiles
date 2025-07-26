@@ -132,22 +132,27 @@ return {
         end
 
         local section_recent_files = function()
-            local cwd = vim.loop.cwd()
-            local files = vim.tbl_filter(function(f)
-                return vim.fn.filereadable(f) == 1
-            end, vim.v.oldfiles or {})
-            files = vim.tbl_filter(function(f)
-                return f:sub(1, cwd:len()) == cwd
+            local oldfiles = vim.v.oldfiles or {}
+            local input = table.concat(oldfiles, "\n")
+            local files = vim.fn.systemlist("nvim-recent-files", input)
+
+            if vim.tbl_isempty(files) then
+                return {
+                    {
+                        name = "There are no recent files",
+                        action = "",
+                        section = "Recent files",
+                    },
+                }
+            end
+
+            return vim.tbl_map(function(file)
+                return {
+                    name = file,
+                    action = "edit " .. file,
+                    section = "Recent files",
+                }
             end, files)
-            if #files == 0 then
-                return { { name = "There are no recent files", action = "", section = "Recent files" } }
-            end
-            local items = {}
-            for _, f in next, vim.list_slice(files, 1, 7) do
-                local path = vim.fn.fnamemodify(f, ":~:.")
-                table.insert(items, { name = path, action = "edit " .. path, section = "Recent files" })
-            end
-            return items
         end
 
         local mini_starter = require("mini.starter")
