@@ -4,8 +4,6 @@ return {
             source = "nvim-telescope/telescope.nvim",
             depends = {
                 "nvim-lua/plenary.nvim",
-                "kkharji/sqlite.lua",
-                "nvim-telescope/telescope-frecency.nvim",
             },
         })
 
@@ -25,6 +23,7 @@ return {
             },
             defaults = {
                 generic_sorter = require("mini.fuzzy").get_telescope_sorter,
+                dynamic_preview_title = true,
                 mappings = {
                     i = {
                         ["<esc>"] = telescope_actions.close,
@@ -35,13 +34,6 @@ return {
                     "node_modules/.*",
                 },
             },
-            extensions = {
-                frecency = {
-                    show_unindexed = false,
-                },
-            },
         })
-
-        telescope.load_extension("frecency")
     end,
 }

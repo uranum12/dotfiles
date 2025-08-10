@@ -126,7 +126,7 @@ return {
         local section_telescope = function()
             return {
                 { name = "Files", action = "Telescope find_files", section = "Telescope" },
-                { name = "Recent", action = "Telescope frecency", section = "Telescope" },
+                { name = "Recent", action = "Telescope oldfiles", section = "Telescope" },
                 { name = "Grep", action = "Telescope live_grep", section = "Telescope" },
             }
         end
