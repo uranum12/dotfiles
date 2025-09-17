@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 
 return {
     font = wezterm.font_with_fallback({
-        "Moralerspace Argon HWNF",
+        "Moralerspace Argon HW",
         "HackGen Console NF",
     }),
     font_size = 12,
@@ -12,4 +12,5 @@ return {
     keys = {
         { key = "t", mods = "SUPER", action = wezterm.action.SpawnCommandInNewTab({ cwd = "~" }) },
     },
+    window_background_opacity = 0.9,
 }
