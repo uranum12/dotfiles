@@ -32,5 +32,6 @@ return {
         vim.keymap.set("n", "<leader>w", "<cmd>Files<cr>", { desc = "explorer" })
         vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<cr>", { desc = "undotree" })
         vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<cr>", { desc = "terminal" })
+        vim.keymap.set("n", "<leader>m", "<cmd>lua MiniMap.toggle()<cr>", { desc = "minimap" })
     end,
 }

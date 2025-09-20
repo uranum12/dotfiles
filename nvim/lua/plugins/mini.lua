@@ -204,6 +204,21 @@ return {
             },
         })
 
+        local map = require("mini.map")
+        map.setup({
+            integrations = {
+                map.gen_integration.builtin_search(),
+                map.gen_integration.diff(),
+                map.gen_integration.diagnostic(),
+            },
+            symbols = {
+                scroll_line = ">",
+            },
+            window = {
+                show_integration_count = false,
+            },
+        })
+
         require("mini.cursorword").setup()
         require("mini.indentscope").setup()
         require("mini.pairs").setup()
