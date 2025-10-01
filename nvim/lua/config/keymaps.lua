@@ -25,7 +25,7 @@ return {
         vim.keymap.set("n", "<leader>d", vim.lsp.buf.hover, { desc = "hover docs (lsp)" })
         vim.keymap.set("n", "<leader>c", vim.lsp.buf.code_action, { desc = "code action (lsp)" })
 
-        vim.keymap.set("n", "<leader>e", "<cmd>Pick files<cr>", { desc = "files (pick)" })
+        vim.keymap.set("n", "<leader>e", "<cmd>PickFiles<cr>", { desc = "files (pick)" })
         vim.keymap.set("n", "<leader>g", "<cmd>Pick grep_live<cr>", { desc = "grep (pick)" })
         vim.keymap.set("n", "<leader>b", "<cmd>Pick buffers<cr>", { desc = "buffers (pick)" })
 

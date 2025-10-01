@@ -31,5 +31,19 @@ return {
                 require("mini.files").open()
             end
         end, {})
+
+        vim.api.nvim_create_user_command("PickFiles", function()
+            local pick = require("mini.pick")
+            pick.builtin.cli({
+                command = { "fd", "--hidden", "--type", "f", "--exclude", ".git" },
+            }, {
+                source = {
+                    name = "Files",
+                    show = function(buf_id, items, query)
+                        pick.default_show(buf_id, items, query, { show_icons = true })
+                    end,
+                },
+            })
+        end, {})
     end,
 }

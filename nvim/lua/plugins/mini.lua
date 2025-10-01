@@ -223,5 +223,6 @@ return {
         require("mini.indentscope").setup()
         require("mini.pairs").setup()
         require("mini.pick").setup()
+        vim.ui.select = MiniPick.ui_select
     end,
 }
