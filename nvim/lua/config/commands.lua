@@ -45,5 +45,40 @@ return {
                 },
             })
         end, {})
+
+        vim.api.nvim_create_user_command("PickAllFiles", function()
+            local pick = require("mini.pick")
+            pick.builtin.cli({
+                command = { "fd", "--unrestricted", "--type", "f" },
+            }, {
+                source = {
+                    name = "All Files",
+                    show = function(buf_id, items, query)
+                        pick.default_show(buf_id, items, query, { show_icons = true })
+                    end,
+                },
+            })
+        end, {})
+
+        vim.api.nvim_create_user_command("PickOldFiles", function()
+            local pick = require("mini.pick")
+
+            local valid_items = {}
+            for _, path in ipairs(vim.v.oldfiles) do
+                if vim.fn.filereadable(path) == 1 then
+                    table.insert(valid_items, path)
+                end
+            end
+
+            pick.start({
+                source = {
+                    items = valid_items,
+                    name = "Old Files",
+                    show = function(buf_id, items, query)
+                        pick.default_show(buf_id, items, query, { show_icons = true })
+                    end,
+                },
+            })
+        end, {})
     end,
 }

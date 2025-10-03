@@ -125,6 +125,15 @@ return {
             }
         end
 
+        local section_pick = function()
+            return {
+                { name = "Files", action = "PickFiles", section = "Pick" },
+                { name = "All Files", action = "PickAllFiles", section = "Pick" },
+                { name = "Old Files", action = "PickOldFiles", section = "Pick" },
+                { name = "Grep", action = "Pick grep_live", section = "Pick" },
+            }
+        end
+
         local section_recent_files = function()
             local oldfiles = vim.v.oldfiles or {}
             local input = table.concat(oldfiles, "\n")
@@ -158,11 +167,12 @@ return {
             items = {
                 section_builtin,
                 section_update,
+                section_pick,
                 section_recent_files,
             },
             content_hooks = {
                 mini_starter.gen_hook.adding_bullet("» "),
-                mini_starter.gen_hook.indexing("all", { "Builtin", "Update" }),
+                mini_starter.gen_hook.indexing("all", { "Builtin", "Update", "Pick" }),
                 mini_starter.gen_hook.aligning("center", "center"),
             },
         })
