@@ -36,7 +36,14 @@ __history_fzf_select() {
 
     hist=$(
         zhist list $list_opts --fzf \
-        | fzf-tmux --read0 --delimiter='\t' --with-nth=1 -p 80% --height 30% $query_opt \
+        | fzf-tmux \
+            --read0 \
+            --delimiter='\t' \
+            --with-nth=1 \
+            -p 80% \
+            --height 30% \
+            --preview='echo -e {2..} | bat --language=zsh --number --color=always --paging=never' \
+            $query_opt \
         | cut -f2-
     )
 
