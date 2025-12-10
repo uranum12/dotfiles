@@ -42,7 +42,14 @@ __history_fzf_select() {
             --with-nth=1 \
             -p 80% \
             --height 30% \
-            --preview='echo -e {2..} | bat --language=zsh --number --color=always --paging=never' \
+            --preview='echo -e {2..} \
+                | bat \
+                    --number \
+                    --language=zsh \
+                    --color=always \
+                    --paging=never \
+                    --wrap=character \
+                    --terminal-width="${FZF_PREVIEW_COLUMNS:-80}"' \
             $query_opt \
         | cut -f2-
     )
