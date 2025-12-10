@@ -1,6 +1,6 @@
 # history
 local tmpfile=$(mktemp)
-zhist list --recent > "$tmpfile"
+zhist list --recent --zsh-history > "$tmpfile"
 fc -IR "$tmpfile"
 rm "$tmpfile"
 unset tmpfile
@@ -26,33 +26,37 @@ add-zsh-hook zshaddhistory history_add
 add-zsh-hook preexec history_preexec
 add-zsh-hook precmd history_precmd
 
-function history_select() {
-    if [ -n "$BUFFER" ]; then
-        local hist=$(zhist list | fzf-tmux -p 80% --height 30% -q "$BUFFER")
-    else
-        local hist=$(zhist list | fzf-tmux -p 80% --height 30%)
-    fi
-    if [ -n "$hist" ]; then
+__history_fzf_select() {
+    emulate -L zsh
+    local list_opts="$1"
+    local query_opt=""
+    local hist
+
+    [[ -n "$BUFFER" ]] && query_opt="-q $BUFFER"
+
+    hist=$(
+        zhist list $list_opts --fzf \
+        | fzf-tmux --read0 --delimiter='\t' --with-nth=1 -p 80% --height 30% $query_opt \
+        | cut -f2-
+    )
+
+    if [[ -n "$hist" ]]; then
         BUFFER="$hist"
-        CURSOR=$#BUFFER
+        CURSOR=${#BUFFER}
     fi
+
     zle reset-prompt
+}
+
+history_select() {
+    __history_fzf_select "--recent"
 }
 
 zle -N history_select
 bindkey '^r' history_select
 
-function history_select_all() {
-    if [ -n "$BUFFER" ]; then
-        local hist=$(zhist list -a | fzf-tmux -p 80% --height 30% -q "$BUFFER")
-    else
-        local hist=$(zhist list -a | fzf-tmux -p 80% --height 30%)
-    fi
-    if [ -n "$hist" ]; then
-        BUFFER="$hist"
-        CURSOR=$#BUFFER
-    fi
-    zle reset-prompt
+history_select_all() {
+    __history_fzf_select "--all"
 }
 
 zle -N history_select_all
