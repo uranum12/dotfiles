@@ -21,6 +21,10 @@ setopt no_beep              # ビープ音を消す
 setopt ignore_eof           # C-dを無効化
 setopt list_packed          # 表示をコンパクトに
 
+# keybind
+bindkey -d
+bindkey -e
+
 # lazy load
 zsh-defer source "$ZDOTDIR/hooks/lazy.zsh"
 

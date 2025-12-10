@@ -2,6 +2,8 @@
 export CC=gcc
 export CXX=g++
 
+export EDITOR="nvim"
+
 export PIP_REQUIRE_VIRTUALENV=true
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 

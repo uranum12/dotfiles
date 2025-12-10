@@ -8,6 +8,11 @@ fi
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+# edit command line by editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey "^O" edit-command-line
+
 # aliases
 alias cp="cp -i"
 alias mv="mv -i"
