@@ -1,0 +1,24 @@
+abbrevs:
+  - name: cmake
+    abbr: cm
+    snippet: "cmake -G Ninja -B build"
+  - name: cmake export compile_commands.json
+    abbr: json
+    snippet: "-D CMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    global: true
+    context: "cmake "
+  - name: cmake ccache
+    abbr: ccache
+    snippet: "-D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache"
+    global: true
+    context: "cmake "
+  - name: cmake release
+    abbr: release
+    snippet: "-D CMAKE_BUILD_TYPE=Release"
+    global: true
+    context: "cmake "
+  - name: cmake debug
+    abbr: debug
+    snippet: "-D CMAKE_BUILD_TYPE=Debug"
+    global: true
+    context: "cmake "

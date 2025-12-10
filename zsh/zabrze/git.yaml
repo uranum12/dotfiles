@@ -1,0 +1,74 @@
+abbrevs:
+  - name: git
+    abbr: g
+    snippet: git
+  - name: git add
+    abbr: a
+    snippet: add
+    global: true
+    context: "^git "
+  - name: git commit
+    abbr: c
+    snippet: commit
+    global: true
+    context: "^git "
+  - name: git commit with message
+    abbr: cm
+    snippet: 'commit -m "{}"'
+    global: true
+    context: "^git "
+  - name: git diff
+    abbr: d
+    snippet: diff
+    global: true
+    context: "^git "
+  - name: git diff staged
+    abbr: ds
+    snippet: "diff --cached"
+    global: true
+    context: "^git "
+  - name: git log
+    abbr: l
+    snippet: "log --graph --oneline -n 10"
+    global: true
+    context: "^git "
+  - name: git long log
+    abbr: ll
+    snippet: "log --graph -n 10"
+    global: true
+    context: "^git "
+  - name: git status
+    abbr: s
+    snippet: "status -sb"
+    global: true
+    context: "^git "
+  - name: git branch
+    abbr: b
+    snippet: "branch -a"
+    global: true
+    context: "^git "
+  - name: git push
+    abbr: p
+    snippet: "push"
+    global: true
+    context: "^git "
+  - name: git switch
+    abbr: w
+    snippet: switch
+    global: true
+    context: "^git "
+  - name: git restore
+    abbr: r
+    snippet: restore
+    global: true
+    context: "^git "
+  - name: git reset
+    abbr: re
+    snippet: "reset --soft @^"
+    global: true
+    context: "^git "
+  - name: git checkout
+    abbr: ch
+    snippet: checkout
+    global: true
+    context: "^git "
