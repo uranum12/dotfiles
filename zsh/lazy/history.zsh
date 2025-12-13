@@ -63,7 +63,7 @@ __history_fzf_select() {
 }
 
 history_select() {
-    __history_fzf_select "--recent"
+    __history_fzf_select
 }
 
 zle -N history_select
