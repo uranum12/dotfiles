@@ -21,3 +21,5 @@ later("plugins.mini")
 later("plugins.cmp")
 later("plugins.lsp")
 later("plugins.treesitter")
+
+require("local").setup()
