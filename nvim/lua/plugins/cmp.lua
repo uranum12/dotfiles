@@ -17,6 +17,12 @@ return {
                 default = { "lsp", "path", "snippets", "buffer" },
             },
             completion = {
+                list = {
+                    selection = {
+                        preselect = false,
+                        auto_insert = true,
+                    },
+                },
                 menu = {
                     draw = {
                         columns = {
