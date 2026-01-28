@@ -5,18 +5,22 @@ return {
             depends = {
                 "williamboman/mason.nvim",
                 "williamboman/mason-lspconfig.nvim",
-                "nvimtools/none-ls.nvim",
             },
         })
+
+        add("stevearc/conform.nvim")
 
         require("mason").setup()
         require("mason-lspconfig").setup()
 
-        local null_ls = require("null-ls")
-
-        null_ls.setup({
-            sources = {
-                null_ls.builtins.formatting.stylua,
+        require("conform").setup({
+            formatters_by_ft = {
+                lua = { "stylua" },
+                sh = { "shfmt" },
+                zsh = { "shfmt" },
+                yaml = { "yamlfmt" },
+                toml = { "taplo" },
+                cmake = { "cmake_format" },
             },
         })
 

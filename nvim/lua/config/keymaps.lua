@@ -47,16 +47,19 @@ local function set_normal_keymaps(buf)
 
     vim.keymap.set("n", "<leader>t", "<cmd>Term<cr>", with_desc("terminal"))
     vim.keymap.set("n", "<leader>m", "<cmd>lua MiniMap.toggle()<cr>", with_desc("minimap"))
+
+    vim.keymap.set("n", "<leader>f", function()
+        require("conform").format({
+            async = true,
+            lsp_format = "fallback",
+        })
+    end, with_desc("format"))
 end
 
 local function set_lsp_keymaps(buf)
     local function with_desc(desc)
         return { buffer = buf, silent = true, desc = desc }
     end
-
-    vim.keymap.set("n", "<leader>f", function()
-        vim.lsp.buf.format({ async = true })
-    end, with_desc("format (lsp)"))
 
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, with_desc("rename (lsp)"))
     vim.keymap.set("n", "<leader>d", vim.lsp.buf.hover, with_desc("hover docs (lsp)"))

@@ -8,7 +8,7 @@ return {
         require("blink.cmp").setup({
             keymap = {
                 preset = "none",
-                ["<C-e>"] = { "cancel" },
+                ["<C-e>"] = { "cancel", "hide_signature" },
                 ["<CR>"] = { "accept", "fallback" },
                 ["<TAB>"] = { "select_next", "fallback" },
                 ["<S-Tab>"] = { "select_prev", "fallback" },
