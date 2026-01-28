@@ -112,7 +112,7 @@ return {
 
         local section_builtin = function()
             return {
-                { name = "Edit new buffer", action = "enew", section = "Builtin" },
+                { name = "New buffer", action = "NewMD", section = "Builtin" },
                 { name = "Quit NeoVim", action = "qall", section = "Builtin" },
             }
         end
@@ -125,12 +125,13 @@ return {
             }
         end
 
-        local section_pick = function()
+        local section_files = function()
             return {
-                { name = "Files", action = "PickFiles", section = "Pick" },
-                { name = "All Files", action = "PickAllFiles", section = "Pick" },
-                { name = "Old Files", action = "PickOldFiles", section = "Pick" },
-                { name = "Grep", action = "Pick grep_live", section = "Pick" },
+                { name = "Explore", action = "Files", section = "Files" },
+                { name = "Files", action = "PickFiles", section = "Files" },
+                { name = "All Files", action = "PickAllFiles", section = "Files" },
+                { name = "Old Files", action = "PickOldFiles", section = "Files" },
+                { name = "Grep", action = "Pick grep_live", section = "Files" },
             }
         end
 
@@ -167,12 +168,12 @@ return {
             items = {
                 section_builtin,
                 section_update,
-                section_pick,
+                section_files,
                 section_recent_files,
             },
             content_hooks = {
                 mini_starter.gen_hook.adding_bullet("» "),
-                mini_starter.gen_hook.indexing("all", { "Builtin", "Update", "Pick" }),
+                mini_starter.gen_hook.indexing("all", { "Builtin", "Update", "Files" }),
                 mini_starter.gen_hook.aligning("center", "center"),
             },
         })

@@ -1,5 +1,14 @@
 return {
     setup = function()
+        vim.api.nvim_create_user_command("NewMD", function()
+            vim.cmd("enew")
+
+            vim.bo.filetype = "markdown"
+
+            local filename = os.date("%Y%m%d") .. ".md"
+            vim.api.nvim_buf_set_name(0, filename)
+        end, {})
+
         vim.api.nvim_create_user_command("BufRemove", function()
             local bufnr_current = vim.fn.bufnr("%")
             local bufnr_alt = vim.fn.bufnr("#")
