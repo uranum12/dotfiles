@@ -11,6 +11,10 @@ return {
         vim.api.nvim_set_option_value("undodir", vim.fn.stdpath("cache") .. "/undo", {})
         vim.api.nvim_set_option_value("directory", vim.fn.stdpath("cache") .. "/swap", {})
         vim.api.nvim_set_option_value("laststatus", 3, {})
+        vim.api.nvim_set_option_value("wrap", true, {})
+        local current_listchars = vim.api.nvim_get_option_value("listchars", {})
+        vim.api.nvim_set_option_value("listchars", current_listchars .. ",trail:･", {})
+        vim.opt.formatoptions:remove({ "c", "r", "o" })
 
         vim.g.mapleader = " "
     end,
