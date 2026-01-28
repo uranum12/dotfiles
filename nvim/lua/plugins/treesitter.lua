@@ -1,12 +1,15 @@
 return {
-    later = function(add)
+    now = function(add)
         add({
             source = "nvim-treesitter/nvim-treesitter",
+            checkout = "main",
             depends = {
                 "nvim-treesitter/nvim-treesitter-context",
                 "JoosepAlviste/nvim-ts-context-commentstring",
             },
         })
+
+        require("nvim-treesitter").setup()
 
         require("treesitter-context").setup({
             enable = true,
@@ -18,14 +21,6 @@ return {
             languages = {
                 c = "// %s",
                 cpp = "// %s",
-            },
-        })
-
-        require("nvim-treesitter.configs").setup({
-            auto_install = true,
-            ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
-            highlight = {
-                enable = true,
             },
         })
 

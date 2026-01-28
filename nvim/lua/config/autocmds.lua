@@ -6,6 +6,8 @@ return {
             pattern = "*",
             callback = function()
                 vim.opt_local.formatoptions:remove({ "r", "o" })
+
+                pcall(vim.treesitter.start)
             end,
         })
     end,

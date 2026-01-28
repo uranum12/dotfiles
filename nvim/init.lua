@@ -20,7 +20,7 @@ later("plugins.mini")
 
 later("plugins.cmp")
 later("plugins.lsp")
-later("plugins.treesitter")
+now("plugins.treesitter")
 
 -- features
 require("features.hilens").setup()
