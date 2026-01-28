@@ -25,6 +25,8 @@ local function set_universal_keymaps(buf)
     vim.keymap.set("n", "<leader><leader>", "<cmd>HiWord<cr>", with_desc("highlight the word"))
 
     vim.keymap.set("n", "<leader>q", "<cmd>BufRemove<cr>", with_desc("remove buffer"))
+
+    vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', with_desc("yank to clipboard"))
 end
 
 local function set_normal_keymaps(buf)

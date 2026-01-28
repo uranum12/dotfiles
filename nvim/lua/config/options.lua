@@ -15,6 +15,7 @@ return {
         local current_listchars = vim.api.nvim_get_option_value("listchars", {})
         vim.api.nvim_set_option_value("listchars", current_listchars .. ",trail:･", {})
         vim.opt.formatoptions:remove({ "c", "r", "o" })
+        vim.g.clipboard = "osc52"
 
         vim.g.mapleader = " "
     end,
