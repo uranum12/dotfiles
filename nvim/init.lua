@@ -22,4 +22,8 @@ later("plugins.cmp")
 later("plugins.lsp")
 later("plugins.treesitter")
 
-require("local").setup()
+-- features
+require("features.hilens").setup()
+require("features.number").setup()
+require("features.terminal").setup()
+require("features.localconfig").setup()

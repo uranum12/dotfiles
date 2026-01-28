@@ -23,7 +23,12 @@ return {
         vim.api.nvim_create_user_command("HiWord", function()
             vim.fn.setreg("/", [[\<]] .. vim.fn.expand("<cword>") .. [[\>]])
             vim.api.nvim_set_option_value("hlsearch", true, {})
-            require("hlslens").start()
+            require("features.hilens").update()
+        end, {})
+
+        vim.api.nvim_create_user_command("HiClear", function()
+            vim.cmd("nohlsearch")
+            require("features.hilens").clear()
         end, {})
 
         vim.api.nvim_create_user_command("Files", function()
