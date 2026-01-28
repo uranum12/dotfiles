@@ -1,0 +1,18 @@
+{
+    "main": {
+        "prefix": "main",
+        "body": [
+            "def main():",
+            "    ${1:pass}",
+            "",
+            "if __name__ == \"__main__\":",
+            "\tmain()"
+        ],
+        "description": "Execute code if the file is executed directly"
+    },
+    "from ... import ...": {
+        "prefix": "from",
+        "body": "from ${1:pathlib} import ${2:Path}",
+        "description": "Import individual objects directly into the caller’s symbol table"
+    }
+}

@@ -1,50 +1,36 @@
 return {
     later = function(add)
         add({
-            source = "hrsh7th/nvim-cmp",
-            depends = {
-                "hrsh7th/cmp-nvim-lsp",
-                "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
-                "hrsh7th/cmp-cmdline",
-            },
+            source = "saghen/blink.cmp",
+            checkout = "v1.8.0",
         })
 
-        local cmp = require("cmp")
-
-        cmp.setup({
-            snippet = {
-                expand = function(args)
-                    vim.snippet.expand(args.body)
-                end,
+        require("blink.cmp").setup({
+            keymap = {
+                preset = "none",
+                ["<C-e>"] = { "cancel" },
+                ["<CR>"] = { "accept", "fallback" },
+                ["<TAB>"] = { "select_next", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "fallback" },
             },
-            mapping = {
-                ["<C-e>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                ["<Tab>"] = cmp.mapping.select_next_item(),
-                ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-            },
-            sources = cmp.config.sources({
-                { name = "nvim_lsp" },
-            }, {
-                { name = "buffer" },
-            }),
-        })
-
-        cmp.setup.cmdline({ "/", "?" }, {
-            mapping = cmp.mapping.preset.cmdline(),
             sources = {
-                { name = "buffer" },
+                default = { "lsp", "path", "snippets", "buffer" },
             },
-        })
-
-        cmp.setup.cmdline(":", {
-            mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-                { name = "path" },
-            }, {
-                { name = "cmdline" },
-            }),
+            completion = {
+                menu = {
+                    draw = {
+                        columns = {
+                            { "label", "label_description", gap = 2 },
+                            { "kind", "source_name", gap = 1 },
+                        },
+                    },
+                },
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 0,
+                },
+            },
+            signature = { enabled = true },
         })
     end,
 }
