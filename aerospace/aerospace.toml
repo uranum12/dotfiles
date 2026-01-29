@@ -1,0 +1,119 @@
+start-at-login = true
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+[gaps]
+inner.horizontal = 5
+inner.vertical = 5
+outer.left = 5
+outer.bottom = 5
+outer.top = 5
+outer.right = 5
+
+[mode.main.binding]
+alt-slash = "layout tiles horizontal vertical"
+alt-comma = "layout accordion horizontal vertical"
+alt-period = "layout floating tiling"
+
+alt-r = "flatten-workspace-tree"
+
+alt-tab = "focus --boundaries-action wrap-around-the-workspace dfs-next"
+alt-shift-tab = "focus --boundaries-action wrap-around-the-workspace dfs-prev"
+
+alt-h = "focus left"
+alt-j = "focus down"
+alt-k = "focus up"
+alt-l = "focus right"
+
+alt-shift-h = "move left"
+alt-shift-j = "move down"
+alt-shift-k = "move up"
+alt-shift-l = "move right"
+
+alt-1 = "workspace 1"
+alt-2 = "workspace 2"
+alt-3 = "workspace 3"
+alt-4 = "workspace 4"
+alt-5 = "workspace 5"
+alt-6 = "workspace 6"
+alt-7 = "workspace 7"
+alt-8 = "workspace 8"
+alt-9 = "workspace 9"
+
+alt-shift-1 = "move-node-to-workspace 1"
+alt-shift-2 = "move-node-to-workspace 2"
+alt-shift-3 = "move-node-to-workspace 3"
+alt-shift-4 = "move-node-to-workspace 4"
+alt-shift-5 = "move-node-to-workspace 5"
+alt-shift-6 = "move-node-to-workspace 6"
+alt-shift-7 = "move-node-to-workspace 7"
+alt-shift-8 = "move-node-to-workspace 8"
+alt-shift-9 = "move-node-to-workspace 9"
+
+alt-semicolon = "mode service"
+
+[mode.service.binding]
+esc = "mode main"
+alt-semicolon = "mode main"
+
+alt-h = "focus left"
+alt-j = "focus down"
+alt-k = "focus up"
+alt-l = "focus right"
+
+alt-shift-h = "move left"
+alt-shift-j = "move down"
+alt-shift-k = "move up"
+alt-shift-l = "move right"
+
+h = "resize width +50"
+l = "resize width -50"
+j = "resize height -50"
+k = "resize height +50"
+
+shift-h = "resize width +10"
+shift-l = "resize width -10"
+shift-j = "resize height -10"
+shift-k = "resize height +10"
+
+ctrl-h = "swap left"
+ctrl-j = "swap down"
+ctrl-k = "swap up"
+ctrl-l = "swap right"
+
+[[on-window-detected]]
+if.app-id = "com.tinyspeck.slackmacgap"
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = "com.hnc.Discord"
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = "org.mozilla.thunderbird"
+run = "move-node-to-workspace 1"
+
+[[on-window-detected]]
+if.app-id = "app.zen-browser.zen"
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = "com.apple.Safari"
+run = "move-node-to-workspace 2"
+
+[[on-window-detected]]
+if.app-id = "com.github.wez.wezterm"
+run = "move-node-to-workspace 3"
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = "com.apple.finder"
+run = "layout floating"
+
+[[on-window-detected]]
+if.app-id = "com.apple.Passwords"
+run = "layout floating"
