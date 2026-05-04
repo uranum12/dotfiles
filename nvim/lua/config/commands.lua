@@ -77,16 +77,11 @@ return {
         vim.api.nvim_create_user_command("PickOldFiles", function()
             local pick = require("mini.pick")
 
-            local valid_items = {}
-            for _, path in ipairs(vim.v.oldfiles) do
-                if vim.fn.filereadable(path) == 1 then
-                    table.insert(valid_items, path)
-                end
-            end
+            local oldfiles = vim.fn.systemlist("nvim-oldfiles list")
 
             pick.start({
                 source = {
-                    items = valid_items,
+                    items = oldfiles,
                     name = "Old Files",
                     show = function(buf_id, items, query)
                         pick.default_show(buf_id, items, query, { show_icons = true })

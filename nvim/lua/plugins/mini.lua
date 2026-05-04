@@ -136,9 +136,7 @@ return {
         end
 
         local section_recent_files = function()
-            local oldfiles = vim.v.oldfiles or {}
-            local input = table.concat(oldfiles, "\n")
-            local files = vim.fn.systemlist("nvim-recent-files", input)
+            local files = vim.fn.systemlist("nvim-oldfiles list | nvim-recent-files")
 
             if vim.tbl_isempty(files) then
                 return {
