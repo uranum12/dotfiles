@@ -1,12 +1,26 @@
 return {
     setup = function()
         vim.api.nvim_create_user_command("NewMD", function()
+            local date_str = os.date("%Y%m%d")
+            local index = 1
+            local filename = ""
+
+            while true do
+                local name = string.format("%s-%02d.md", date_str, index)
+
+                if vim.fn.filereadable(name) == 0 then
+                    filename = name
+                    break
+                end
+
+                index = index + 1
+            end
+
             vim.cmd("enew")
-
             vim.bo.filetype = "markdown"
-
-            local filename = os.date("%Y%m%d") .. ".md"
             vim.api.nvim_buf_set_name(0, filename)
+
+            vim.notify("New file created: " .. filename, vim.log.levels.INFO)
         end, {})
 
         vim.api.nvim_create_user_command("BufRemove", function()
