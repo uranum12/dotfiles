@@ -21,6 +21,11 @@ local function set_universal_keymaps(buf)
     vim.keymap.set({ "n", "x" }, "K", "H", opts)
     vim.keymap.set({ "n", "x" }, "W", "b", opts)
 
+    vim.keymap.set("n", "U", "<c-r>", opts)
+
+    vim.keymap.set("x", "<", "<gv", opts);
+    vim.keymap.set("x", ">", ">gv", opts)
+
     vim.keymap.set("n", "<esc><esc>", "<cmd>HiClear<cr>", opts)
     vim.keymap.set("n", "<leader><leader>", "<cmd>HiWord<cr>", with_desc("highlight the word"))
 
@@ -74,9 +79,13 @@ return {
     setup = function()
         local group = vim.api.nvim_create_augroup("keymaps", { clear = true })
 
-        vim.api.nvim_create_autocmd("FileType", {
+        vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "FileType" }, {
             group = group,
             callback = function(args)
+                if vim.b[args.buf].keymaps_applied then
+                    return
+                end
+
                 if is_terminal_like(args.buf) then
                     return
                 end
@@ -86,6 +95,8 @@ return {
                 if is_normal_edit(args.buf) then
                     set_normal_keymaps(args.buf)
                 end
+
+                vim.b[args.buf].keymaps_applied = true
             end,
         })
 
