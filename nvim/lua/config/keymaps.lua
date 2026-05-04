@@ -65,7 +65,9 @@ local function set_lsp_keymaps(buf)
 
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, with_desc("rename (lsp)"))
     vim.keymap.set("n", "<leader>d", vim.lsp.buf.hover, with_desc("hover docs (lsp)"))
-    vim.keymap.set("n", "<leader>c", vim.lsp.buf.code_action, with_desc("code action (lsp)"))
+    vim.keymap.set("n", "<leader>cc", vim.lsp.buf.code_action, with_desc("code action (lsp)"))
+    vim.keymap.set("n", "<leader>cd", vim.lsp.buf.definition, with_desc("go to definition (lsp)"))
+    vim.keymap.set("n", "<leader>cf", vim.diagnostic.open_float, with_desc("show diagnostic (lsp)"))
 end
 
 return {

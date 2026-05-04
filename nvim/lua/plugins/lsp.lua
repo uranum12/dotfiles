@@ -36,6 +36,11 @@ return {
                     return prefix .. message
                 end,
             },
+            float = {
+                border = "rounded",
+                max_width = 80,
+                source = true,
+            },
         })
     end,
 }
