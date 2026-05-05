@@ -1,14 +1,5 @@
 return {
-    now = function(add)
-        add({
-            source = "nvim-treesitter/nvim-treesitter",
-            checkout = "main",
-            depends = {
-                "nvim-treesitter/nvim-treesitter-context",
-                "JoosepAlviste/nvim-ts-context-commentstring",
-            },
-        })
-
+    setup = function()
         require("nvim-treesitter").setup()
 
         require("treesitter-context").setup({

@@ -1,5 +1,5 @@
 return {
-    now = function(add)
+    setup = function()
         local icons = require("mini.icons")
         icons.setup()
         icons.mock_nvim_web_devicons()
@@ -119,7 +119,7 @@ return {
 
         local section_update = function()
             return {
-                { name = "Plugin", action = "DepsUpdate", section = "Update" },
+                { name = "Plugin", action = "lua vim.pack.update()", section = "Update" },
                 { name = "Language Server", action = "Mason", section = "Update" },
                 { name = "TreeSitter", action = "TSUpdate", section = "Update" },
             }
@@ -191,8 +191,7 @@ return {
 
         require("mini.notify").setup()
         vim.notify = require("mini.notify").make_notify()
-    end,
-    later = function(add)
+
         local miniclue = require("mini.clue")
         miniclue.setup({
             triggers = {

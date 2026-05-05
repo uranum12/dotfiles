@@ -1,10 +1,5 @@
 return {
-    later = function(add)
-        add({
-            source = "saghen/blink.cmp",
-            checkout = "v1.8.0",
-        })
-
+    setup = function()
         require("blink.cmp").setup({
             keymap = {
                 preset = "none",
