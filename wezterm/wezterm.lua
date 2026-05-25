@@ -12,5 +12,22 @@ return {
     keys = {
         { key = "t", mods = "SUPER", action = wezterm.action.SpawnCommandInNewTab({ cwd = "~" }) },
     },
-    window_background_opacity = 0.9,
+    show_new_tab_button_in_tab_bar = false,
+    show_close_tab_button_in_tabs = false,
+    background = {
+        {
+            source = {
+                Color = "#282c34",
+            },
+            opacity = 1.0,
+            width = "100%",
+            height = "100%",
+        },
+        {
+            source = {
+                File = wezterm.config_dir .. "/wallpaper.jpg",
+            },
+            opacity = 0.15,
+        },
+    },
 }
