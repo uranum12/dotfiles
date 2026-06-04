@@ -1,0 +1,39 @@
+[[snippets]]
+name = "cmake"
+trigger = "cm"
+snippet = "cmake -G Ninja -B build"
+
+[[snippets]]
+name = "cmake export compile_commands.json"
+trigger = "json"
+snippet = "-D CMAKE_EXPORT_COMPILE_COMMANDS=ON"
+global = true
+context = '^cmake\s'
+
+[[snippets]]
+name = "cmake ccache"
+trigger = "ccache"
+snippet = "-D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache"
+global = true
+context = '^cmake\s'
+
+[[snippets]]
+name = "cmake build type release"
+trigger = "release"
+snippet = "-D CMAKE_BUILD_TYPE=Release"
+global = true
+context = '^cmake\s'
+
+[[snippets]]
+name = "cmake build type debug"
+trigger = "debug"
+snippet = "-D CMAKE_BUILD_TYPE=Debug"
+global = true
+context = '^cmake\s'
+
+[[snippets]]
+name = "cmake toolchain file"
+trigger = "tool"
+snippet = "-D CMAKE_TOOLCHAIN_FILE={}"
+global = true
+context = '^cmake\s'

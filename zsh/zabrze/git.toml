@@ -1,0 +1,98 @@
+[[snippets]]
+name = "lazygit"
+trigger = "lg"
+snippet = "lazygit"
+
+[[snippets]]
+name = "ghq"
+trigger = "gg"
+snippet = "ghq get"
+
+[[snippets]]
+name = "git"
+trigger = "g"
+snippet = "git"
+
+[[snippets]]
+name = "git add"
+trigger = "a"
+snippet = "add"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git commit"
+trigger = "c"
+snippet = "commit"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git commit with message"
+trigger = "cm"
+snippet = 'commit -m "{}"'
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git diff"
+trigger = "d"
+snippet = "diff"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git diff staged"
+trigger = "ds"
+snippet = "diff --cached"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git log"
+trigger = "l"
+snippet = "log --graph --oneline -n 10"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git long log"
+trigger = "ll"
+snippet = "log --graph -n 10"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git status"
+trigger = "s"
+snippet = "status -sb"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git branch"
+trigger = "b"
+snippet = "branch -a"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git push"
+trigger = "p"
+snippet = "push"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git reset"
+trigger = "re"
+snippet = "reset --soft @^"
+global = true
+context = '^git\s'
+
+[[snippets]]
+name = "git checkout"
+trigger = "ch"
+snippet = "checkout"
+global = true
+context = '^git\s'

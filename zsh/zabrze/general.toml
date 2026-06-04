@@ -1,0 +1,26 @@
+[[snippets]]
+name = "neovim"
+trigger = "v"
+snippet = "nvim"
+
+[[snippets]]
+name = "tmux"
+trigger = "t"
+snippet = "tmux"
+
+[[snippets]]
+name = "tmux new session"
+trigger = "n"
+snippet = 'new -s "{}"'
+global = true
+context = '^tmux\s'
+
+[[snippets]]
+name = "clear"
+trigger = "c"
+snippet = "clear"
+
+[[snippets]]
+name = "cd .."
+trigger = ".."
+snippet = "cd .."
