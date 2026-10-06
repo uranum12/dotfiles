@@ -24,16 +24,12 @@ vim.pack.add({
         src = "https://github.com/nvim-treesitter/nvim-treesitter",
         version = "main",
     },
-    -- misc
-    "https://github.com/jiaoshijie/undotree",
 })
 
 require("plugins.mini").setup()
 require("plugins.treesitter").setup()
 
 vim.defer_fn(function()
-    require("plugins.misc").setup()
-
     -- features
     require("features.hilens").setup()
     require("features.number").setup()

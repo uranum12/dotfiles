@@ -53,7 +53,6 @@ local function set_normal_keymaps(buf)
     vim.keymap.set("n", "<leader>b", "<cmd>Pick buffers<cr>", with_desc("buffers (pick)"))
 
     vim.keymap.set("n", "<leader>e", "<cmd>Files<cr>", with_desc("explorer"))
-    vim.keymap.set("n", "<leader>u", require("undotree").toggle, with_desc("undotree"))
 
     vim.keymap.set("n", "<leader>t", "<cmd>Term<cr>", with_desc("terminal"))
     vim.keymap.set("n", "<leader>m", "<cmd>lua MiniMap.toggle()<cr>", with_desc("minimap"))
