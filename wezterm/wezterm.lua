@@ -17,17 +17,16 @@ return {
     background = {
         {
             source = {
-                Color = "#282c34",
+                Gradient = {
+                    colors = { "#282c34", "#1e222a" },
+                    orientation = {
+                        Linear = { angle = -25.0 },
+                    },
+                },
             },
             opacity = 1.0,
             width = "100%",
             height = "100%",
-        },
-        {
-            source = {
-                File = wezterm.config_dir .. "/wallpaper.jpg",
-            },
-            opacity = 0.15,
         },
     },
 }
