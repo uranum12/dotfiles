@@ -1,0 +1,15 @@
+theme = Atom One Dark
+
+working-directory = home
+tab-inherit-working-directory = false
+
+window-decoration = auto
+macos-titlebar-style = tabs
+
+mouse-hide-while-typing = true
+
+font-family = Moralerspace Argon HW
+font-family = HackGen Console NF
+
+clipboard-read = deny
+clipboard-write = allow
